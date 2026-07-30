@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kasratshala — Hero</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+/* ── TOKENS ───────────────────────────────── */
+:root {
+  --maroon: #6B1A1A;
+  --brick:  #A83030;
+  --green:  #2E7B2E;
+  --g2:     #3D8C3D;
+  --tan:    #C4835A;
+  --gold:   #D4A853;
+  --bg:     #080604;
+  --bg1:    #0F0A06;
+  --txt:    #F0E6DC;
+  --muted:  #9A8878;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: Georgia, 'Times New Roman', serif;
+  overflow: hidden;
+}
+
+/* ── HERO WRAPPER ─────────────────────────── */
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ── BACKGROUND LAYERS ─────────────────────── */
+.bg-base {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 55% 70% at 68% 50%, rgba(46,123,46,.09) 0%, transparent 65%),
+    radial-gradient(ellipse 38% 55% at 28% 50%, rgba(107,26,26,.14) 0%, transparent 55%),
+    linear-gradient(160deg, #0c0804 0%, #080604 40%, #0a0502 100%);
+  opacity: 0;
+}
+
+.bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(196,131,90,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196,131,90,.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  opacity: 0;
+}
+
+/* film grain via SVG turbulence filter */
+.bg-grain {
+  position: absolute; inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.045'/%3E%3C/svg%3E");
+}
+
+/* ── LEFT CONTENT ─────────────────────────── */
+.content {
+  position: relative;
+  z-index: 10;
+  padding: 0 7vw;
+  max-width: 54%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sanskrit label */
+.label-san {
+  font-size: clamp(.78rem, 1.1vw, .95rem);
+  color: var(--gold);
+  letter-spacing: .16em;
+  margin-bottom: 2.2rem;
+  /* hidden until GSAP */
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* Big title uses clip reveal — each line is a clip container */
+.title-line {
+  display: block;
+  overflow: hidden;   /* this is the clip */
+  line-height: 0.92;
+  margin-bottom: .08em;
+}
+
+.title-text {
+  display: block;
+  font-size: clamp(3.8rem, 9.5vw, 8.8rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  transform: translateY(115%); /* starts below clip, GSAP pulls it up */
+}
+
+.title-text.maroon { color: var(--brick); }
+
+/* Divider line */
+.divider {
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--brick) 0%, var(--gold) 55%, transparent 100%);
+  margin: 1.8rem 0 1.6rem;
+}
+
+/* Tagline */
+.tagline {
+  font-size: clamp(.8rem, 1.25vw, 1rem);
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 2.2rem;
+  opacity: 0;
+}
+
+/* Pills */
+.pills {
+  display: flex;
+  gap: .7rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.8rem;
+  opacity: 0;
+}
+
+.pill {
+  padding: .32rem .9rem;
+  border-radius: 100px;
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border: 1px solid;
+  font-family: system-ui, sans-serif;
+}
+
+.pill-loc { border-color: rgba(196,131,90,.38); color: var(--tan); }
+.pill-alt { border-color: rgba(46,123,46,.38);  color: var(--g2); }
+
+/* CTA buttons */
+.cta-row {
+  display: flex;
+  gap: .9rem;
+  opacity: 0;
+}
+
+.btn {
+  padding: .78rem 2rem;
+  border-radius: 3px;
+  font-size: .8rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  font-family: system-ui, sans-serif;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.btn:hover { transform: translateY(-3px); }
+
+.btn-primary {
+  background: var(--brick);
+  color: var(--txt);
+  box-shadow: 0 4px 22px rgba(107,26,26,.45);
+}
+.btn-primary:hover { box-shadow: 0 10px 32px rgba(168,48,48,.55); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid rgba(240,230,220,.15);
+}
+.btn-ghost:hover { border-color: rgba(212,168,83,.45); color: var(--gold); }
+
+/* ── RIGHT / TREE PANEL ──────────────────────── */
+.tree-wrap {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ambient glow behind tree */
+.glow {
+  position: absolute;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(46,123,46,.16) 0%, transparent 70%);
+  filter: blur(50px);
+  opacity: 0;
+}
+
+.tree-svg {
+  position: relative;
+  z-index: 1;
+  width: 90%;
+  height: 90%;
+  max-width: 560px;
+  max-height: 680px;
+}
+
+/* ── SCROLL HINT ─────────────────────────────── */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  opacity: 0;
+}
+
+.scroll-hint span {
+  font-size: .6rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: system-ui, sans-serif;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity: .25; transform: scaleY(.7); }
+  50%      { opacity: 1;   transform: scaleY(1);  }
+}
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 900px) {
+  .content { max-width: 100%; }
+  .tree-wrap { display: none; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+
+  <!-- Background -->
+  <div class="bg-base"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-grain"></div>
+
+  <!-- Left content -->
+  <div class="content">
+
+    <p class="label-san">शरीरं आद्यं मन्दिरम् &nbsp;·&nbsp; चलनं प्रार्थना</p>
+
+    <!-- Clip-reveal title — two lines -->
+    <h1>
+      <span class="title-line"><span class="title-text">KASRAT</span></span>
+      <span class="title-line"><span class="title-text maroon">SHALA</span></span>
+    </h1>
+
+    <div class="divider"></div>
+
+    <p class="tagline">Movement Arts Dojo &nbsp;·&nbsp; Naggar, HP &nbsp;·&nbsp; 1,890 m</p>
+
+    <div class="pills">
+      <span class="pill pill-loc">◦ Himachal Pradesh</span>
+      <span class="pill pill-alt">◦ Steel Mace · Kettlebell · Rope Flow</span>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary">Begin Your Sadhana</button>
+      <button class="btn btn-ghost">View Courses</button>
+    </div>
+
+  </div>
+
+  <!-- Tree -->
+  <div class="tree-wrap">
+    <div class="glow"></div>
+    <svg class="tree-svg" viewBox="0 0 500 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- ROOTS -->
+      <path class="p-root" d="M222 575 C205 555 185 535 162 523" stroke="#3D1E0A" stroke-width="3.5" stroke-linecap="round"/>
+      <path class="p-root" d="M240 580 C228 562 212 545 192 535" stroke="#3D1E0A" stroke-width="4.5" stroke-linecap="round"/>
+      <path class="p-root" d="M260 580 C268 562 278 545 295 535" stroke="#3D1E0A" stroke-width="4.5" stroke-linecap="round"/>
+      <path class="p-root" d="M278 575 C294 558 310 540 330 528" stroke="#3D1E0A" stroke-width="3.5" stroke-linecap="round"/>
+
+      <!-- TRUNK — two sides + centre -->
+      <path class="p-trunk" d="M218 578 C213 535 208 492 198 450 C188 408 182 366 187 326 C190 300 197 280 212 260" stroke="#5C2810" stroke-width="24" stroke-linecap="round"/>
+      <path class="p-trunk" d="M282 578 C287 535 292 492 302 450 C312 408 318 366 313 326 C310 300 303 280 288 260" stroke="#5C2810" stroke-width="24" stroke-linecap="round"/>
+      <path class="p-trunk" d="M250 260 C249 300 249 340 251 380 C253 420 252 460 250 500 C249 530 249 555 250 578" stroke="#6B3415" stroke-width="15" stroke-linecap="round"/>
+
+      <!-- BRANCHES — left -->
+      <path class="p-bl1" d="M212 345 C186 316 155 290 118 272" stroke="#5C2810" stroke-width="13" stroke-linecap="round"/>
+      <path class="p-bl2" d="M118 272 C92 256 65 247 40 252" stroke="#5C2810" stroke-width="8.5" stroke-linecap="round"/>
+      <path class="p-bl2" d="M118 272 C104 246 98 218 103 192" stroke="#5C2810" stroke-width="7.5" stroke-linecap="round"/>
+      <path class="p-bl3" d="M80 255 C62 240 47 224 38 207" stroke="#6B3415" stroke-width="5" stroke-linecap="round"/>
+      <path class="p-bl3" d="M103 192 C88 176 78 158 76 140" stroke="#6B3415" stroke-width="4" stroke-linecap="round"/>
+
+      <!-- BRANCHES — right -->
+      <path class="p-br1" d="M288 345 C314 316 345 290 382 272" stroke="#5C2810" stroke-width="13" stroke-linecap="round"/>
+      <path class="p-br2" d="M382 272 C408 256 435 247 460 252" stroke="#5C2810" stroke-width="8.5" stroke-linecap="round"/>
+      <path class="p-br2" d="M382 272 C396 246 402 218 397 192" stroke="#5C2810" stroke-width="7.5" stroke-linecap="round"/>
+      <path class="p-br3" d="M420 255 C438 240 453 224 462 207" stroke="#6B3415" stroke-width="5" stroke-linecap="round"/>
+      <path class="p-br3" d="M397 192 C412 176 422 158 424 140" stroke="#6B3415" stroke-width="4" stroke-linecap="round"/>
+
+      <!-- BRANCHES — centre/up -->
+      <path class="p-bc"  d="M250 258 C249 222 247 186 244 152" stroke="#5C2810" stroke-width="11" stroke-linecap="round"/>
+      <path class="p-bc"  d="M244 152 C228 126 212 110 196 97" stroke="#6B3415" stroke-width="7" stroke-linecap="round"/>
+      <path class="p-bc"  d="M244 152 C260 126 276 110 292 97" stroke="#6B3415" stroke-width="7" stroke-linecap="round"/>
+
+      <!-- AERIAL ROOTS (hanging, dashed) -->
+      <path class="p-aer" d="M118 272 C116 296 114 325 113 355" stroke="#8B4820" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 4"/>
+      <path class="p-aer" d="M382 272 C384 296 386 325 387 355" stroke="#8B4820" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 4"/>
+      <path class="p-aer" d="M72 252 C70 272 68 294 67 315" stroke="#8B4820" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+      <path class="p-aer" d="M428 252 C430 272 432 294 433 315" stroke="#8B4820" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+
+      <!-- LEAVES — layer 1: deep shadow -->
+      <ellipse class="lf-d" cx="100" cy="198" rx="57" ry="42" fill="#163516"/>
+      <ellipse class="lf-d" cx="52"  cy="172" rx="38" ry="29" fill="#163516"/>
+      <ellipse class="lf-d" cx="400" cy="198" rx="57" ry="42" fill="#163516"/>
+      <ellipse class="lf-d" cx="448" cy="172" rx="38" ry="29" fill="#163516"/>
+      <ellipse class="lf-d" cx="250" cy="93"  rx="72" ry="50" fill="#163516"/>
+      <ellipse class="lf-d" cx="178" cy="78"  rx="50" ry="37" fill="#163516"/>
+      <ellipse class="lf-d" cx="322" cy="78"  rx="50" ry="37" fill="#163516"/>
+      <ellipse class="lf-d" cx="68"  cy="222" rx="42" ry="31" fill="#163516"/>
+      <ellipse class="lf-d" cx="432" cy="222" rx="42" ry="31" fill="#163516"/>
+
+      <!-- LEAVES — layer 2: mid green -->
+      <ellipse class="lf-m" cx="95"  cy="184" rx="50" ry="37" fill="#2E7B2E"/>
+      <ellipse class="lf-m" cx="49"  cy="160" rx="33" ry="25" fill="#2E7B2E"/>
+      <ellipse class="lf-m" cx="405" cy="184" rx="50" ry="37" fill="#2E7B2E"/>
+      <ellipse class="lf-m" cx="451" cy="160" rx="33" ry="25" fill="#2E7B2E"/>
+      <ellipse class="lf-m" cx="250" cy="80"  rx="64" ry="44" fill="#2E7B2E"/>
+      <ellipse class="lf-m" cx="180" cy="64"  rx="44" ry="32" fill="#2E7B2E"/>
+      <ellipse class="lf-m" cx="320" cy="64"  rx="44" ry="32" fill="#2E7B2E"/>
+      <ellipse class="lf-m" cx="65"  cy="205" rx="36" ry="27" fill="#2E7B2E"/>
+      <ellipse class="lf-m" cx="435" cy="205" rx="36" ry="27" fill="#2E7B2E"/>
+
+      <!-- LEAVES — layer 3: highlight -->
+      <ellipse class="lf-h" cx="88"  cy="170" rx="40" ry="29" fill="#3D8C3D"/>
+      <ellipse class="lf-h" cx="45"  cy="148" rx="26" ry="20" fill="#3D8C3D"/>
+      <ellipse class="lf-h" cx="412" cy="170" rx="40" ry="29" fill="#3D8C3D"/>
+      <ellipse class="lf-h" cx="455" cy="148" rx="26" ry="20" fill="#3D8C3D"/>
+      <ellipse class="lf-h" cx="250" cy="65"  rx="54" ry="37" fill="#3D8C3D"/>
+      <ellipse class="lf-h" cx="182" cy="50"  rx="36" ry="26" fill="#3D8C3D"/>
+      <ellipse class="lf-h" cx="318" cy="50"  rx="36" ry="26" fill="#3D8C3D"/>
+
+      <!-- LEAVES — layer 4: tips -->
+      <ellipse class="lf-t" cx="82"  cy="157" rx="26" ry="19" fill="#4DAD4D"/>
+      <ellipse class="lf-t" cx="41"  cy="137" rx="18" ry="13" fill="#4DAD4D"/>
+      <ellipse class="lf-t" cx="418" cy="157" rx="26" ry="19" fill="#4DAD4D"/>
+      <ellipse class="lf-t" cx="459" cy="137" rx="18" ry="13" fill="#4DAD4D"/>
+      <ellipse class="lf-t" cx="250" cy="50"  rx="42" ry="29" fill="#4DAD4D"/>
+      <ellipse class="lf-t" cx="183" cy="36"  rx="28" ry="21" fill="#4DAD4D"/>
+      <ellipse class="lf-t" cx="317" cy="36"  rx="28" ry="21" fill="#4DAD4D"/>
+
+    </svg>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-hint" id="scrollHint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+
+</section>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   SETUP: initialise SVG stroke animation on all <path> elements
+   (dasharray = full length → dashoffset = full length → invisible)
+   GSAP then tweens dashoffset → 0 to "draw" each stroke.
+───────────────────────────────────────────────────────────── */
+document.querySelectorAll('.tree-svg path').forEach(p => {
+  const len = p.getTotalLength();
+  p.style.strokeDasharray  = len;
+  p.style.strokeDashoffset = len;
+});
+
+/* Pre-hide leaf layers (they bloom in later) */
+gsap.set('.lf-d, .lf-m, .lf-h, .lf-t', { scale: 0, opacity: 0, transformOrigin: 'center center' });
+
+/* ─────────────────────────────────────────────────────────────
+   MAIN TIMELINE
+   All timings below are in seconds from tl start.
+   Each line is one "frame" of the cinematic sequence.
+───────────────────────────────────────────────────────────── */
+const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+// FRAME 1 — environment fades in (0–1.2 s)
+tl.to('.bg-base',  { opacity: 1, duration: 1.2 },              0)
+  .to('.bg-grid',  { opacity: 1, duration: 1.6 },              0.3)
+  .to('.bg-grain', { opacity: 1, duration: 1.0 },              0.5)
+
+// FRAME 2 — Sanskrit label drifts up (0.6 s)
+  .to('.label-san', { opacity: 1, y: 0, duration: 0.9 },        0.6)
+
+// FRAME 3 — Title clip reveal: each word rises from its clip box (0.95 s)
+  .to('.title-line:nth-child(1) .title-text',
+      { y: '0%', duration: 0.85, ease: 'power4.out' },          0.95)
+  .to('.title-line:nth-child(2) .title-text',
+      { y: '0%', duration: 0.85, ease: 'power4.out' },          1.1)
+
+// FRAME 4 — divider line draws across (1.7 s)
+  .to('.divider', { width: '340px', duration: 0.65, ease: 'power2.inOut' }, 1.7)
+
+// FRAME 5 — tagline (1.9 s)
+  .to('.tagline', { opacity: 1, y: 0, duration: 0.6 },           1.9)
+
+// FRAME 6 — location pills (2.1 s)
+  .to('.pills',   { opacity: 1, duration: 0.55 },                2.1)
+
+// FRAME 7 — CTA buttons (2.35 s)
+  .to('.cta-row', { opacity: 1, duration: 0.55 },                2.35)
+
+// FRAME 8 — glow orb materialises behind tree (1.1 s)
+  .to('.glow',     { opacity: 1, duration: 1.5, ease: 'power2.out' }, 1.1)
+  .to('.tree-wrap',{ opacity: 1, duration: 0.4 },                     1.3)
+
+// FRAME 9 — roots draw (1.3 s)
+  .to('.p-root', {
+    strokeDashoffset: 0,
+    duration: 0.55,
+    stagger: 0.08,
+    ease: 'power2.inOut'
+  }, 1.3)
+
+// FRAME 10 — trunk rises (1.65 s)
+  .to('.p-trunk', {
+    strokeDashoffset: 0,
+    duration: 0.95,
+    stagger: 0.14,
+    ease: 'power2.inOut'
+  }, 1.65)
+
+// FRAME 11 — main branches (2.1 s)
+  .to('.p-bl1, .p-br1', { strokeDashoffset: 0, duration: 0.65, stagger: .08 }, 2.1)
+  .to('.p-bc',          { strokeDashoffset: 0, duration: 0.6             },     2.2)
+  .to('.p-bl2, .p-br2', { strokeDashoffset: 0, duration: 0.52, stagger: .07 }, 2.6)
+  .to('.p-bl3, .p-br3', { strokeDashoffset: 0, duration: 0.42, stagger: .06 }, 2.95)
+  .to('.p-aer',         { strokeDashoffset: 0, duration: 0.55, stagger: .09, ease: 'power1.out' }, 3.1)
+
+// FRAME 12 — leaves bloom, layer by layer (back-to-front, spring ease)
+  .to('.lf-d', { scale: 1, opacity: .92, stagger: .045, duration: 0.48, ease: 'back.out(1.4)' }, 3.0)
+  .to('.lf-m', { scale: 1, opacity: .90, stagger: .04,  duration: 0.45, ease: 'back.out(1.4)' }, 3.25)
+  .to('.lf-h', { scale: 1, opacity: .88, stagger: .04,  duration: 0.42, ease: 'back.out(1.4)' }, 3.46)
+  .to('.lf-t', { scale: 1, opacity: .78, stagger: .04,  duration: 0.4,  ease: 'back.out(1.4)' }, 3.65)
+
+// FRAME 13 — scroll hint appears last (3.9 s)
+  .to('#scrollHint', { opacity: 1, duration: 0.7 }, 3.9);
+
+
+/* ─────────────────────────────────────────────────────────────
+   IDLE LOOP: subtle motion after intro finishes
+───────────────────────────────────────────────────────────── */
+
+// tree gently floats
+gsap.to('.tree-wrap', {
+  y: -14,
+  duration: 5.5,
+  ease: 'sine.inOut',
+  yoyo: true,
+  repeat: -1,
+  delay: 4.5
+});
+
+// glow orb breathes
+gsap.to('.glow', {
+  scale: 1.18,
+  opacity: 0.65,
+  duration: 4.5,
+  ease: 'sine.inOut',
+  yoyo: true,
+  repeat: -1,
+  delay: 4.2
+});
+
+// leaf tips shimmer (very subtle opacity oscillation)
+gsap.to('.lf-t', {
+  opacity: 0.55,
+  duration: 3.2,
+  ease: 'sine.inOut',
+  yoyo: true,
+  repeat: -1,
+  stagger: { each: 0.4, from: 'random' },
+  delay: 4.5
+});
+</script>
+
+</body>
+</html>
