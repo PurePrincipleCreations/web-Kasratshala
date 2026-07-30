@@ -1,1121 +1,1233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Kasrat Shala — Train Like Nature Intended</title>
-  <style>
-    /* ── DESIGN TOKENS ──────────────────────────────────────────────── */
-    :root {
-      /* extracted from logo */
-      --maroon:       #6B1A1A;
-      --maroon-mid:   #8B2222;
-      --maroon-lite:  #A83030;   /* earthy brick red — no pink */
-      --green:        #2E7B2E;
-      --green-lite:   #3D8C3D;   /* forest green */
-      --tan:          #C4835A;   /* warm earth tan */
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kasratshala — Movement Arts Dojo</title>
+<style>
+/* ─── TOKENS ────────────────────────────────────────── */
+:root{
+  --maroon:  #6B1A1A;
+  --m2:      #8B2222;
+  --brick:   #A83030;
+  --green:   #2E7B2E;
+  --g2:      #3D8C3D;
+  --tan:     #C4835A;
+  --gold:    #D4A853;
+  --bark:    #5C1510;
 
-      /* surfaces — deep warm brown/black */
-      --bg:           #080604;
-      --bg-card:      #100C07;
-      --bg-card2:     #170E09;
-      --border:       rgba(107,26,26,0.28);
-      --border-dim:   rgba(255,255,255,0.07);
+  --bg:      #080604;
+  --bg1:     #0F0A06;
+  --bg2:     #160C08;
+  --bg3:     #1D1009;
 
-      /* accent = earthy maroon, secondary = forest green */
-      --accent:       #7B1F1F;
-      --accent-lite:  #A83030;   /* brick red — warm, earthy */
-      --accent-glow:  rgba(107,26,26,0.45);
-      --accent2:      #2E7B2E;
-      --accent2-lite: #3D8C3D;
-      --accent2-glow: rgba(46,123,46,0.35);
+  --bdr:     rgba(107,26,26,.22);
+  --bdx:     rgba(255,255,255,.07);
+  --bdg:     rgba(46,123,46,.20);
 
-      /* text — warm off-white, no cool/blue tones */
-      --text:         #F2E8E0;
-      --text-muted:   #9A8878;
-      --text-dim:     #685C52;
+  --txt:     #F0E6DC;
+  --muted:   #9A8878;
+  --dim:     #6A5C52;
 
-      --radius:    12px;
-      --radius-lg: 20px;
-    }
+  --r:  10px;
+  --rl: 18px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
 
-    /* ── RESET ──────────────────────────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-    a { color: inherit; text-decoration: none; }
-    ul { list-style: none; }
+/* ─── UTIL ──────────────────────────────────────────── */
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+.sl{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--brick);margin-bottom:8px}
+.div{height:1px;background:var(--bdx)}
+.tag{display:inline-flex;align-items:center;font-size:11px;font-weight:600;
+     letter-spacing:.03em;padding:3px 10px;border-radius:999px}
+.t-m{color:var(--brick);background:rgba(139,34,34,.12);border:1px solid var(--bdr)}
+.t-g{color:var(--g2);background:rgba(46,123,46,.12);border:1px solid var(--bdg)}
+.t-a{color:var(--gold);background:rgba(212,168,83,.10);border:1px solid rgba(212,168,83,.22)}
+.t-d{color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--bdx)}
+.devanagari{font-family:'Noto Sans Devanagari','Mangal',serif;letter-spacing:.02em}
 
-    /* ── UTILS ──────────────────────────────────────────────────────── */
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-    .section-label {
-      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-      color: var(--accent-lite); margin-bottom: 12px;
-    }
-    .divider { height: 1px; background: var(--border-dim); }
+.btn-p{font-size:13px;font-weight:600;color:#fff;background:var(--m2);
+       padding:10px 24px;border-radius:9px;border:none;cursor:pointer;
+       box-shadow:0 0 20px rgba(107,26,26,.4);transition:all .2s;display:inline-block}
+.btn-p:hover{background:var(--brick)}
+.btn-o{font-size:13px;font-weight:500;color:var(--txt);background:transparent;
+       padding:10px 24px;border-radius:9px;border:1px solid var(--bdr);
+       cursor:pointer;transition:all .2s;display:inline-block}
+.btn-o:hover{border-color:var(--brick);color:var(--brick)}
+.btn-g{font-size:13px;font-weight:600;color:#fff;background:var(--green);
+       padding:9px 20px;border-radius:8px;border:none;cursor:pointer;transition:all .2s}
+.btn-g:hover{background:var(--g2)}
 
-    /* background glow blobs */
-    .blob { position: absolute; border-radius: 50%; filter: blur(130px); pointer-events: none; z-index: 0; }
-    .blob-1 { width: 560px; height: 560px; background: rgba(139,34,34,0.13); top: -80px; left: -180px; }
-    .blob-2 { width: 480px; height: 480px; background: rgba(46,123,46,0.10); top: 180px; right: -140px; }
+/* ─── NAV ───────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;
+    background:rgba(8,6,4,.88);backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--bdx)}
+.ni{display:flex;align-items:center;height:60px;max-width:1100px;margin:0 auto;padding:0 24px}
+.logo{font-size:14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+      cursor:pointer;margin-right:28px;white-space:nowrap;line-height:1}
+.logo .sub{display:block;font-size:9px;font-weight:500;letter-spacing:.16em;
+           color:var(--muted);margin-bottom:1px}
+.logo .k{color:var(--brick)}
+.nl{display:flex;gap:2px;flex:1}
+.nl a{font-size:12px;color:var(--muted);padding:6px 12px;border-radius:7px;
+      cursor:pointer;transition:color .2s,background .2s}
+.nl a:hover,.nl a.on{color:var(--txt);background:rgba(255,255,255,.05)}
+.nl a.on{color:var(--gold)}
+.nc{margin-left:auto}
 
-    /* ══ NAV ════════════════════════════════════════════════════════ */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      border-bottom: 1px solid var(--border-dim);
-      background: rgba(8,6,4,0.82);
-      backdrop-filter: blur(18px);
-    }
-    .nav-inner {
-      display: flex; align-items: center; height: 60px;
-      max-width: 1140px; margin: 0 auto; padding: 0 24px;
-    }
-    .nav-logo {
-      font-size: 14px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
-      color: var(--text); margin-right: 36px; white-space: nowrap; line-height: 1.1;
-    }
-    .nav-logo .the { display: block; font-size: 9px; font-weight: 600; letter-spacing: .18em; color: var(--text-muted); margin-bottom: 1px; }
-    .nav-logo .brand { color: var(--accent-lite); }
-    .nav-links { display: flex; gap: 4px; flex: 1; }
-    .nav-links a {
-      font-size: 13px; color: var(--text-muted); padding: 6px 12px;
-      border-radius: 8px; transition: color .2s, background .2s;
-    }
-    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-    .nav-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
-    .btn-ghost {
-      font-size: 13px; color: var(--text-muted); padding: 7px 16px;
-      border-radius: 8px; border: 1px solid var(--border-dim);
-      background: transparent; cursor: pointer; transition: all .2s;
-    }
-    .btn-ghost:hover { color: var(--text); border-color: var(--border); }
-    .btn-primary {
-      font-size: 13px; font-weight: 600; color: #fff;
-      background: var(--accent); padding: 7px 18px;
-      border-radius: 8px; border: none; cursor: pointer;
-      box-shadow: 0 0 18px var(--accent-glow); transition: all .2s;
-    }
-    .btn-primary:hover { background: var(--accent-lite); }
+/* ─── PAGE ROUTING ──────────────────────────────────── */
+.page{display:none;padding-top:60px;min-height:100vh}
+.page.on{display:block}
 
-    /* ══ HERO ═══════════════════════════════════════════════════════ */
-    #hero {
-      position: relative; overflow: hidden;
-      padding: 160px 24px 100px; text-align: center;
-    }
-    #hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 68% 55% at 50% 0%, rgba(139,34,34,0.17) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(139,34,34,0.12); border: 1px solid var(--border);
-      border-radius: 999px; padding: 5px 16px;
-      font-size: 12px; color: var(--accent-lite); font-weight: 600;
-      margin-bottom: 28px;
-    }
-    .hero-eyebrow-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+/* ─── BLOBS ─────────────────────────────────────────── */
+.blob{position:absolute;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0}
+.b1{width:500px;height:500px;background:rgba(107,26,26,.12);top:-60px;left:-150px}
+.b2{width:440px;height:440px;background:rgba(46,123,46,.09);top:100px;right:-120px}
+.b3{width:300px;height:300px;background:rgba(212,168,83,.06);bottom:0;left:30%}
 
-    .hero-title {
-      font-size: clamp(36px, 6vw, 74px);
-      font-weight: 800; letter-spacing: -.03em; line-height: 1.08;
-      max-width: 820px; margin: 0 auto 20px;
-    }
-    .hero-title .hl { color: var(--accent-lite); }
-    .hero-title .hl2 { color: var(--accent2-lite); }
-    .hero-sub {
-      font-size: 18px; color: var(--text-muted); max-width: 520px; margin: 0 auto 40px;
-    }
-    .hero-ctas { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
-    .btn-hero-primary {
-      font-size: 15px; font-weight: 600; color: #fff;
-      background: var(--accent); padding: 12px 28px; border-radius: 10px;
-      border: none; cursor: pointer; box-shadow: 0 0 28px var(--accent-glow); transition: all .2s;
-    }
-    .btn-hero-primary:hover { background: var(--accent-lite); }
-    .btn-hero-outline {
-      font-size: 15px; font-weight: 500; color: var(--text);
-      background: transparent; padding: 12px 28px; border-radius: 10px;
-      border: 1px solid var(--border); cursor: pointer; transition: all .2s;
-    }
-    .btn-hero-outline:hover { border-color: var(--accent); color: var(--accent-lite); }
-    .hero-promo { font-size: 13px; color: var(--text-dim); }
-    .hero-promo span { color: var(--accent2-lite); font-weight: 600; }
+/* ─── SANSKRIT LABEL ────────────────────────────────── */
+.s-label{display:flex;flex-direction:column;gap:2px;margin-bottom:14px}
+.s-label .dev{font-size:13px;color:var(--gold);opacity:.7;font-family:'Noto Sans Devanagari',serif}
+.s-label .en{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brick)}
 
-    .hero-stats {
-      display: flex; justify-content: center;
-      border: 1px solid var(--border-dim); border-radius: var(--radius-lg);
-      background: var(--bg-card); overflow: hidden;
-      max-width: 680px; margin: 48px auto 0;
-    }
-    .hero-stat { flex: 1; padding: 24px 28px; text-align: center; border-right: 1px solid var(--border-dim); }
-    .hero-stat:last-child { border-right: none; }
-    .hero-stat-val { font-size: 28px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
-    .hero-stat-val .a { color: var(--accent-lite); }
-    .hero-stat-val .b { color: var(--accent2-lite); }
-    .hero-stat-label { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+/* ═══ HOME ══════════════════════════════════════════════════════════ */
 
-    /* ══ SECTION BASE ═══════════════════════════════════════════════ */
-    section { padding: 96px 0; position: relative; }
-    .section-header { text-align: center; margin-bottom: 60px; }
-    .section-header h2 {
-      font-size: clamp(28px, 4vw, 46px); font-weight: 800;
-      letter-spacing: -.02em; line-height: 1.15; margin-bottom: 14px;
-    }
-    .section-header p { font-size: 16px; color: var(--text-muted); max-width: 520px; margin: 0 auto; }
+/* hero */
+.hero{position:relative;overflow:hidden;padding:100px 24px 80px;text-align:center}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 65% 55% at 50% 0%,rgba(107,26,26,.16) 0%,transparent 70%);
+  pointer-events:none}
+.hi{position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(107,26,26,.10);border:1px solid var(--bdr);border-radius:999px;
+  padding:5px 16px;font-size:11px;color:var(--brick);font-weight:600;
+  margin-bottom:28px;letter-spacing:.04em}
+.hero-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--brick);
+                 animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(34px,5.5vw,68px);font-weight:800;letter-spacing:-.03em;
+          line-height:1.07;max-width:780px;margin:0 auto 18px}
+.hero h1 .r{color:var(--brick)}
+.hero h1 .g{color:var(--g2)}
+.hero-deva{font-size:15px;color:var(--gold);opacity:.75;margin-bottom:8px;
+           font-family:'Noto Sans Devanagari',serif}
+.hero-mantra{font-size:14px;color:var(--muted);font-style:italic;margin-bottom:32px}
+.hero-ctas{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:56px}
 
-    /* ══ PROGRAMS (was Capabilities) ════════════════════════════════ */
-    #programs { background: var(--bg); }
-    .prog-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1px; background: var(--border-dim);
-      border: 1px solid var(--border-dim); border-radius: var(--radius-lg); overflow: hidden;
-    }
-    .prog-card { background: var(--bg-card); padding: 36px 30px; transition: background .2s; }
-    .prog-card:hover { background: var(--bg-card2); }
-    .prog-num { font-size: 11px; font-weight: 700; letter-spacing: .1em; color: var(--accent-lite); margin-bottom: 14px; }
-    .prog-icon {
-      width: 42px; height: 42px; border-radius: 10px;
-      background: rgba(139,34,34,0.15); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 19px; margin-bottom: 18px;
-    }
-    .prog-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-    .prog-card p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
-    .prog-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 18px; font-size: 12px; color: var(--accent2-lite); font-weight: 600;
-      background: rgba(46,123,46,0.10); border: 1px solid rgba(46,123,46,0.25);
-      padding: 4px 10px; border-radius: 6px;
-    }
+/* values strip */
+.values-strip{display:grid;grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--bdx);border-radius:var(--rl);overflow:hidden;
+  background:var(--bdx);gap:1px}
+.v-cell{background:var(--bg1);padding:28px 24px}
+.v-cell:hover{background:var(--bg2)}
+.v-sym{font-size:22px;margin-bottom:12px}
+.v-skt{font-size:12px;color:var(--gold);font-weight:600;letter-spacing:.04em;
+        font-family:'Noto Sans Devanagari',serif;display:block;margin-bottom:4px}
+.v-name{font-size:15px;font-weight:700;margin-bottom:8px}
+.v-desc{font-size:12px;color:var(--muted);line-height:1.6}
 
-    /* ══ HOW IT WORKS (was Process) ═════════════════════════════════ */
-    #process { background: linear-gradient(to bottom, var(--bg), #0e0906); }
-    .steps-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; position: relative;
-    }
-    .steps-grid::before {
-      content: ''; position: absolute; top: 36px;
-      left: calc(16.6% + 20px); right: calc(16.6% + 20px);
-      height: 1px; background: linear-gradient(to right, var(--accent), var(--accent2)); opacity: .4;
-    }
-    .step-card {
-      background: var(--bg-card); border: 1px solid var(--border-dim);
-      border-radius: var(--radius-lg); padding: 36px 28px;
-      transition: border-color .2s, transform .2s;
-    }
-    .step-card:hover { border-color: var(--border); transform: translateY(-3px); }
-    .step-num {
-      width: 44px; height: 44px; border-radius: 12px;
-      background: var(--accent); color: #fff;
-      font-weight: 800; font-size: 16px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 24px; box-shadow: 0 0 18px var(--accent-glow);
-    }
-    .step-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-    .step-card p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+/* tools preview */
+.tools-sec{padding:80px 0}
+.sh{text-align:center;margin-bottom:50px}
+.sh h2{font-size:clamp(24px,3.8vw,42px);font-weight:800;letter-spacing:-.02em;
+        line-height:1.15;margin-bottom:12px}
+.sh p{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto}
+.tools-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;
+  background:var(--bdx);border:1px solid var(--bdx);border-radius:var(--rl);overflow:hidden}
+.tool-pill{background:var(--bg1);padding:24px 16px;text-align:center;
+           transition:background .2s;cursor:pointer}
+.tool-pill:hover{background:var(--bg2)}
+.tool-sym{font-size:20px;font-weight:800;color:var(--brick);margin-bottom:8px;
+          font-family:monospace;line-height:1}
+.tool-name{font-size:12px;font-weight:700;margin-bottom:4px}
+.tool-type{font-size:10px;color:var(--muted);letter-spacing:.04em}
 
-    /* ══ OUR SPACE (was Infrastructure) ════════════════════════════ */
-    #space { background: var(--bg); }
-    .space-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    .space-features { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
-    .space-feat {
-      background: var(--bg-card); border: 1px solid var(--border-dim);
-      border-radius: var(--radius); padding: 16px 20px;
-      display: flex; align-items: center; justify-content: space-between;
-      transition: border-color .2s;
-    }
-    .space-feat:hover { border-color: var(--border); }
-    .space-feat-name { font-size: 13px; font-weight: 600; }
-    .space-feat-note { font-size: 12px; color: var(--text-dim); }
-    .space-feat-val { font-size: 18px; font-weight: 800; color: var(--accent-lite); }
-    .space-visual {
-      background: var(--bg-card); border: 1px solid var(--border-dim);
-      border-radius: var(--radius-lg); aspect-ratio: 16/10;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
-    }
-    .space-visual::before {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(circle at 30% 50%, rgba(139,34,34,0.22) 0%, transparent 45%),
-        radial-gradient(circle at 75% 35%, rgba(46,123,46,0.18) 0%, transparent 40%);
-    }
-    .space-grid-bg {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(139,34,34,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(139,34,34,0.06) 1px, transparent 1px);
-      background-size: 38px 38px;
-    }
-    /* decorative tree silhouette via css */
-    .space-label {
-      position: absolute; bottom: 16px; right: 16px;
-      font-size: 12px; font-weight: 700; color: var(--accent-lite);
-      background: rgba(139,34,34,0.18); border: 1px solid var(--border);
-      padding: 4px 12px; border-radius: 999px;
-    }
-    .space-big-icon {
-      font-size: 72px; position: relative; z-index: 1; filter: drop-shadow(0 0 20px rgba(139,34,34,0.5));
-    }
+/* setting */
+.setting-sec{padding:80px 0;background:linear-gradient(to bottom,var(--bg),#0e0906)}
+.set-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.set-vis{background:var(--bg1);border:1px solid var(--bdx);border-radius:var(--rl);
+         aspect-ratio:4/3;position:relative;overflow:hidden}
+.set-grid-bg{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(107,26,26,.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(107,26,26,.05) 1px,transparent 1px);
+  background-size:34px 34px}
+.set-glow{position:absolute;inset:0;
+  background:radial-gradient(circle at 40% 80%,rgba(107,26,26,.20) 0%,transparent 50%),
+             radial-gradient(circle at 70% 25%,rgba(46,123,46,.14) 0%,transparent 45%)}
+.elev-badge{position:absolute;top:16px;right:16px;
+  font-size:11px;font-weight:700;color:var(--gold);
+  background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.22);
+  padding:5px 12px;border-radius:999px}
+.set-text h2{font-size:clamp(24px,3.5vw,40px);font-weight:800;letter-spacing:-.02em;
+             line-height:1.15;margin-bottom:14px}
+.set-text p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:12px}
+.loc-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.loc-chip{font-size:11px;font-weight:600;padding:5px 12px;border-radius:999px;
+          background:var(--bg1);border:1px solid var(--bdx);color:var(--muted)}
 
-    /* ══ LIVE STATS (was Metrics) ═══════════════════════════════════ */
-    #stats { background: linear-gradient(to bottom, #0e0906, var(--bg)); }
-    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
-    .stat-card {
-      background: var(--bg-card); border: 1px solid var(--border-dim);
-      border-radius: var(--radius); padding: 28px 20px; text-align: center;
-    }
-    .stat-val { font-size: 34px; font-weight: 800; letter-spacing: -.02em; }
-    .stat-val .a { color: var(--accent-lite); }
-    .stat-val .b { color: var(--accent2-lite); }
-    .stat-label { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
-    .stat-change { font-size: 11px; color: var(--accent2-lite); margin-top: 6px; font-weight: 600; }
-    .stats-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .stats-panel {
-      background: var(--bg-card); border: 1px solid var(--border-dim);
-      border-radius: var(--radius-lg); padding: 28px;
-    }
-    .stats-panel h4 { font-size: 14px; font-weight: 700; margin-bottom: 20px; }
-    .bar-row { display: flex; flex-direction: column; gap: 14px; }
-    .bar-item { display: flex; align-items: center; gap: 12px; }
-    .bar-label { font-size: 13px; color: var(--text-muted); min-width: 130px; }
-    .bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 999px; }
-    .bar-fill.m { background: linear-gradient(to right, var(--accent), var(--accent-lite)); }
-    .bar-fill.g { background: linear-gradient(to right, var(--accent2), var(--accent2-lite)); }
-    .bar-pct { font-size: 12px; color: var(--text-dim); min-width: 32px; text-align: right; }
-    .schedule-list { display: flex; flex-direction: column; gap: 0; }
-    .schedule-item {
-      display: flex; align-items: center; gap: 12px; padding: 10px 0;
-      border-bottom: 1px solid var(--border-dim);
-    }
-    .schedule-item:last-child { border-bottom: none; }
-    .sch-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .sch-dot.r { background: var(--accent-lite); box-shadow: 0 0 6px var(--accent-glow); }
-    .sch-dot.g { background: var(--accent2-lite); box-shadow: 0 0 6px var(--accent2-glow); }
-    .sch-dot.t { background: var(--tan); }
-    .sch-info { flex: 1; font-size: 13px; }
-    .sch-info strong { color: var(--text); }
-    .sch-info span { color: var(--text-muted); margin-left: 6px; font-size: 12px; }
-    .sch-time { font-size: 12px; color: var(--text-dim); }
+/* mantra band */
+.mantra-band{padding:72px 0;text-align:center;position:relative;overflow:hidden;
+             background:var(--bg)}
+.mantra-band::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(107,26,26,.11) 0%,transparent 70%)}
+.mantra-deva{font-size:clamp(18px,3vw,28px);color:var(--gold);opacity:.8;
+             font-family:'Noto Sans Devanagari',serif;margin-bottom:12px;
+             position:relative;z-index:1}
+.mantra-en{font-size:clamp(14px,2vw,18px);color:var(--muted);
+           font-style:italic;position:relative;z-index:1}
 
-    /* ══ TRAINERS (was Integrations) ════════════════════════════════ */
-    #trainers { background: var(--bg); }
-    .trainers-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
-    .trainer-card {
-      background: var(--bg-card); border: 1px solid var(--border-dim);
-      border-radius: var(--radius-lg); padding: 28px 20px;
-      text-align: center; transition: border-color .2s, transform .2s;
-    }
-    .trainer-card:hover { border-color: var(--border); transform: translateY(-3px); }
-    .trainer-avatar {
-      width: 60px; height: 60px; border-radius: 50%;
-      margin: 0 auto 14px; display: flex; align-items: center; justify-content: center;
-      font-size: 24px; border: 2px solid var(--border);
-    }
-    .trainer-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-    .trainer-spec { font-size: 12px; color: var(--accent2-lite); font-weight: 600; margin-bottom: 6px; }
-    .trainer-exp { font-size: 12px; color: var(--text-dim); }
-    .certifications {
-      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 28px;
-    }
-    .cert-badge {
-      font-size: 12px; color: var(--text-muted); background: var(--bg-card);
-      border: 1px solid var(--border-dim); padding: 5px 14px; border-radius: 999px;
-    }
+/* ═══ COURSES ═══════════════════════════════════════════════════════ */
+.page-hdr{padding:80px 0 60px;text-align:center;position:relative;overflow:hidden}
+.page-hdr::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 55% 45% at 50% 0%,rgba(107,26,26,.14) 0%,transparent 70%)}
+.page-hdr h1{font-size:clamp(30px,4.5vw,56px);font-weight:800;letter-spacing:-.03em;
+             margin-bottom:12px;position:relative;z-index:1}
+.page-hdr p{font-size:15px;color:var(--muted);max-width:520px;margin:0 auto;
+            position:relative;z-index:1}
+.page-hdr .sub-deva{font-size:13px;color:var(--gold);opacity:.65;
+                     font-family:'Noto Sans Devanagari',serif;margin-bottom:10px;
+                     position:relative;z-index:1}
 
-    /* ══ PHILOSOPHY (was Security) ═══════════════════════════════════ */
-    #philosophy { background: linear-gradient(to bottom, var(--bg), #0e0906); }
-    .phil-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-    .phil-pillars { display: flex; flex-direction: column; gap: 18px; margin-top: 28px; }
-    .pillar {
-      display: flex; gap: 16px; align-items: flex-start;
-      background: var(--bg-card); border: 1px solid var(--border-dim);
-      border-radius: var(--radius); padding: 20px; transition: border-color .2s;
-    }
-    .pillar:hover { border-color: var(--border); }
-    .pillar-icon {
-      width: 38px; height: 38px; border-radius: 8px;
-      background: rgba(139,34,34,0.15); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0;
-    }
-    .pillar h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-    .pillar p { font-size: 13px; color: var(--text-muted); }
-    .values-panel {
-      background: var(--bg-card); border: 1px solid var(--border-dim);
-      border-radius: var(--radius-lg); padding: 32px;
-    }
-    .values-panel h4 { font-size: 14px; font-weight: 700; margin-bottom: 24px; }
-    .value-item { padding: 14px 0; border-bottom: 1px solid var(--border-dim); }
-    .value-item:last-child { border-bottom: none; }
-    .value-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-    .value-name { font-size: 13px; font-weight: 600; }
-    .value-score { font-size: 12px; color: var(--accent2-lite); font-weight: 700; }
-    .value-bar-track { height: 4px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
-    .value-bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(to right, var(--accent), var(--accent2-lite)); }
+.flt-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:36px}
+.flt{font-size:11px;font-weight:600;padding:6px 14px;border-radius:999px;
+     border:1px solid var(--bdx);background:transparent;color:var(--muted);
+     cursor:pointer;transition:all .2s}
+.flt.on,.flt:hover{background:var(--m2);border-color:var(--m2);color:#fff}
 
-    /* ══ TESTIMONIAL ════════════════════════════════════════════════ */
-    #testimonial { background: var(--bg); }
-    .testimonial-card {
-      max-width: 760px; margin: 0 auto;
-      background: var(--bg-card); border: 1px solid var(--border-dim);
-      border-radius: var(--radius-lg); padding: 48px 56px; text-align: center; position: relative;
-    }
-    .testimonial-card::before {
-      content: '"'; position: absolute; top: -16px; left: 40px;
-      font-size: 110px; color: var(--accent); opacity: .18;
-      font-family: Georgia, serif; line-height: 1;
-    }
-    .testimonial-quote {
-      font-size: 20px; font-weight: 500; line-height: 1.65;
-      color: var(--text); margin-bottom: 28px; position: relative; z-index: 1;
-    }
-    .testimonial-author { display: flex; align-items: center; justify-content: center; gap: 14px; }
-    .author-avatar {
-      width: 46px; height: 46px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--tan));
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 15px; color: #fff;
-    }
-    .author-name { font-size: 14px; font-weight: 700; }
-    .author-title { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
-    .stars { color: var(--tan); font-size: 14px; letter-spacing: 2px; margin-bottom: 2px; }
+.c-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.c-card{background:var(--bg1);border:1px solid var(--bdx);border-radius:var(--rl);
+        overflow:hidden;transition:border-color .2s,transform .2s}
+.c-card:hover{border-color:var(--bdr);transform:translateY(-3px)}
+.c-card.sig{border-color:var(--bdr)}
+.c-head{padding:22px 22px 18px;background:var(--bg2);border-bottom:1px solid var(--bdx)}
+.c-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+.c-sym{font-size:26px;font-weight:900;color:var(--brick);font-family:monospace;line-height:1}
+.c-head h3{font-size:15px;font-weight:700;margin-bottom:6px}
+.c-head p{font-size:12px;color:var(--muted);line-height:1.6}
+.c-body{padding:18px 22px}
+.c-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);
+       margin-bottom:7px}
+.c-row .mi{font-size:12px;width:14px;text-align:center;flex-shrink:0}
+.c-tags{display:flex;flex-wrap:wrap;gap:5px;margin:14px 0}
+.c-price{display:flex;align-items:baseline;gap:6px;margin-bottom:16px}
+.c-price .amt{font-size:22px;font-weight:800}
+.c-price .per{font-size:12px;color:var(--dim)}
 
-    /* ══ MEMBERSHIP PRICING ═════════════════════════════════════════ */
-    #pricing { background: linear-gradient(to bottom, var(--bg), #0e0906); }
-    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .pricing-card {
-      background: var(--bg-card); border: 1px solid var(--border-dim);
-      border-radius: var(--radius-lg); padding: 36px 28px;
-      display: flex; flex-direction: column;
-      transition: border-color .2s, transform .2s;
-    }
-    .pricing-card:hover { transform: translateY(-4px); }
-    .pricing-card.featured {
-      border-color: var(--accent);
-      background: linear-gradient(to bottom, rgba(139,34,34,0.08), var(--bg-card));
-      position: relative;
-    }
-    .pricing-card.featured::before {
-      content: 'Most Popular';
-      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-      font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-      color: #fff; background: var(--accent); padding: 4px 14px; border-radius: 999px;
-    }
-    .pricing-tier { font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
-    .pricing-price { font-size: 44px; font-weight: 800; letter-spacing: -.02em; margin: 12px 0 4px; }
-    .pricing-price span { font-size: 16px; font-weight: 500; color: var(--text-dim); }
-    .pricing-period { font-size: 12px; color: var(--text-dim); margin-bottom: 20px; }
-    .pricing-sep { height: 1px; background: var(--border-dim); margin: 16px 0; }
-    .pricing-feature {
-      display: flex; align-items: flex-start; gap: 8px;
-      font-size: 13px; color: var(--text-muted); margin-bottom: 10px;
-    }
-    .pricing-feature::before { content: '✓'; color: var(--accent2-lite); font-weight: 700; flex-shrink: 0; }
-    .pricing-cta { margin-top: auto; padding-top: 24px; }
-    .btn-plan {
-      width: 100%; padding: 12px; border-radius: 10px;
-      font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s;
-    }
-    .btn-plan-outline {
-      background: transparent; color: var(--text);
-      border: 1px solid var(--border-dim);
-    }
-    .btn-plan-outline:hover { border-color: var(--accent); color: var(--accent-lite); }
-    .btn-plan-filled {
-      background: var(--accent); color: #fff; border: none;
-      box-shadow: 0 0 18px var(--accent-glow);
-    }
-    .btn-plan-filled:hover { background: var(--accent-lite); }
+/* ═══ WORKSHOPS ══════════════════════════════════════════════════════ */
+.ws-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.ws{background:var(--bg1);border:1px solid var(--bdx);border-radius:var(--rl);
+    padding:28px;transition:border-color .2s,transform .2s}
+.ws:hover{border-color:var(--bdr);transform:translateY(-2px)}
+.ws.feat{border-color:var(--bdr);grid-column:span 2;
+         background:linear-gradient(135deg,rgba(107,26,26,.06),var(--bg1))}
+.ws-chip{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;
+         letter-spacing:.07em;text-transform:uppercase;color:var(--gold);
+         background:rgba(212,168,83,.10);border:1px solid rgba(212,168,83,.22);
+         padding:4px 12px;border-radius:999px;margin-bottom:12px}
+.ws h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.ws.feat h3{font-size:20px}
+.ws p{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:16px}
+.ws-meta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:18px}
+.ws-mi{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
+.ws-foot{display:flex;align-items:center;justify-content:space-between;
+         padding-top:16px;border-top:1px solid var(--bdx);flex-wrap:wrap;gap:10px}
+.ws-price{font-size:20px;font-weight:800}
+.ws-avail{font-size:12px;color:var(--g2);font-weight:600}
+.ws-avail.ltd{color:var(--brick)}
 
-    /* ══ FOOTER ═════════════════════════════════════════════════════ */
-    footer {
-      background: #060404; border-top: 1px solid var(--border-dim);
-      padding: 64px 0 32px;
-    }
-    .footer-top {
-      display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 40px; margin-bottom: 48px;
-    }
-    .footer-logo { font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; }
-    .footer-logo .the { display: block; font-size: 9px; font-weight: 600; letter-spacing: .18em; color: var(--text-muted); }
-    .footer-logo .brand { color: var(--accent-lite); }
-    .footer-brand p { font-size: 13px; color: var(--text-dim); line-height: 1.6; max-width: 220px; margin-top: 8px; }
-    .footer-col h5 {
-      font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--text-muted); margin-bottom: 16px;
-    }
-    .footer-col a { display: block; font-size: 13px; color: var(--text-dim); margin-bottom: 10px; transition: color .2s; }
-    .footer-col a:hover { color: var(--text); }
-    .footer-bottom {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 24px; border-top: 1px solid var(--border-dim);
-      font-size: 12px; color: var(--text-dim);
-    }
-    .footer-legal { display: flex; gap: 20px; }
-    .footer-legal a:hover { color: var(--text); }
+/* ═══ CAMPS ══════════════════════════════════════════════════════════ */
+.camp-grid{display:grid;grid-template-columns:1fr;gap:22px}
+.camp{background:var(--bg1);border:1px solid var(--bdx);border-radius:var(--rl);
+      display:grid;grid-template-columns:1fr 260px;overflow:hidden;transition:border-color .2s}
+.camp:hover{border-color:var(--bdr)}
+.camp-body{padding:30px 28px}
+.camp-season{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+             color:var(--gold);margin-bottom:6px}
+.camp-body h3{font-size:19px;font-weight:800;margin-bottom:6px}
+.camp-dates{font-size:12px;color:var(--brick);font-weight:600;margin-bottom:12px}
+.camp-body p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:18px}
+.camp-feats{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+.cf{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--muted)}
+.cf::before{content:'◦';color:var(--gold);flex-shrink:0;font-size:14px;line-height:1.2}
+.camp-tags{display:flex;flex-wrap:wrap;gap:6px}
+.camp-side{background:var(--bg2);border-left:1px solid var(--bdx);padding:28px 22px;
+           display:flex;flex-direction:column;gap:14px;justify-content:space-between}
+.cd{display:flex;flex-direction:column;gap:3px}
+.cd-l{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.cd-v{font-size:13px;font-weight:600}
+.camp-price .amt{font-size:24px;font-weight:800;display:block}
+.camp-price .note{font-size:11px;color:var(--dim);display:block;margin-top:2px}
+.camp-price .early{font-size:11px;color:var(--g2);font-weight:600;display:block;margin-top:3px}
 
-    /* ══ RESPONSIVE ═════════════════════════════════════════════════ */
-    @media (max-width: 900px) {
-      .prog-grid, .steps-grid, .space-layout, .phil-layout,
-      .pricing-grid, .stats-bottom { grid-template-columns: 1fr; }
-      .stats-grid, .trainers-grid { grid-template-columns: repeat(2, 1fr); }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .steps-grid::before { display: none; }
-      .nav-links { display: none; }
-      .hero-stats { flex-direction: column; }
-      .hero-stat { border-right: none; border-bottom: 1px solid var(--border-dim); }
-      .hero-stat:last-child { border-bottom: none; }
-      .testimonial-card { padding: 36px 28px; }
-    }
-  </style>
+/* ═══ CONNECT ════════════════════════════════════════════════════════ */
+.conn-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:60px 0}
+.conn-info h2{font-size:clamp(24px,3vw,38px);font-weight:800;letter-spacing:-.02em;
+              line-height:1.15;margin-bottom:14px}
+.conn-info p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:28px}
+.c-blocks{display:flex;flex-direction:column;gap:12px}
+.cb{display:flex;gap:12px;align-items:flex-start;
+    background:var(--bg1);border:1px solid var(--bdx);border-radius:var(--r);padding:16px}
+.cb-ico{width:36px;height:36px;border-radius:8px;background:rgba(107,26,26,.14);
+        border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;
+        font-size:15px;flex-shrink:0}
+.cb h4{font-size:13px;font-weight:700;margin-bottom:3px}
+.cb p{font-size:13px;color:var(--muted);line-height:1.5}
+.cb a{color:var(--brick);font-size:13px;font-weight:600}
+.payment-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:20px}
+.pay-badge{font-size:11px;color:var(--muted);background:var(--bg1);
+           border:1px solid var(--bdx);padding:4px 12px;border-radius:999px}
+
+.form-card{background:var(--bg1);border:1px solid var(--bdx);border-radius:var(--rl);padding:32px}
+.form-card h3{font-size:17px;font-weight:700;margin-bottom:4px}
+.form-card .fs{font-size:13px;color:var(--muted);margin-bottom:24px}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;
+          text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.fg input,.fg textarea,.fg select{
+  width:100%;background:var(--bg2);border:1px solid var(--bdx);border-radius:8px;
+  padding:10px 13px;font-size:13px;color:var(--txt);outline:none;font-family:inherit;
+  transition:border-color .2s}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--bdr)}
+.fg select option{background:var(--bg2)}
+.fg textarea{height:100px;resize:vertical;line-height:1.6}
+.fgr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ─── FOOTER ────────────────────────────────────────── */
+footer{background:#060404;border-top:1px solid var(--bdx);padding:52px 0 28px}
+.ft{display:grid;grid-template-columns:1.7fr repeat(4,1fr);gap:32px;margin-bottom:36px}
+.fb-logo{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.fb-logo .sub{display:block;font-size:8px;font-weight:500;letter-spacing:.2em;color:var(--muted)}
+.fb-logo .k{color:var(--brick)}
+.fb p{font-size:12px;color:var(--dim);line-height:1.65;margin-top:8px;max-width:200px}
+.fc h5{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+        color:var(--muted);margin-bottom:14px}
+.fc a{display:block;font-size:12px;color:var(--dim);margin-bottom:8px;
+      cursor:pointer;transition:color .2s}
+.fc a:hover{color:var(--txt)}
+.fb-bot{display:flex;align-items:center;justify-content:space-between;
+        padding-top:20px;border-top:1px solid var(--bdx);font-size:11px;color:var(--dim)}
+.fl{display:flex;gap:16px}
+.fl a{cursor:pointer}
+.fl a:hover{color:var(--txt)}
+
+/* ─── RESPONSIVE ────────────────────────────────────── */
+@media(max-width:960px){
+  .values-strip,.c-grid{grid-template-columns:repeat(2,1fr)}
+  .tools-grid{grid-template-columns:repeat(4,1fr)}
+  .set-grid,.conn-grid{grid-template-columns:1fr}
+  .ws-grid{grid-template-columns:1fr}
+  .ws.feat{grid-column:span 1}
+  .camp{grid-template-columns:1fr}
+  .camp-side{border-left:none;border-top:1px solid var(--bdx)}
+  .ft{grid-template-columns:1fr 1fr}
+  .fgr{grid-template-columns:1fr}
+  .nl{display:none}
+  .set-vis{aspect-ratio:16/9}
+}
+@media(max-width:600px){
+  .values-strip,.c-grid,.tools-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
 
-<!-- ═══════════════════════ NAV ════════════════════════════════════════════ -->
+<!-- ────────────── NAV ─────────────────────────────── -->
 <nav>
-  <div class="nav-inner">
-    <div class="nav-logo">
-      <span class="the">THE</span>
-      <span class="brand">Kasrat</span> Shala
+  <div class="ni">
+    <div class="logo" onclick="sp('home')">
+      <span class="sub">MOVEMENT ARTS DOJO</span>
+      <span class="k">Kasrat</span>shala
     </div>
-    <div class="nav-links">
-      <a href="#programs">Programs</a>
-      <a href="#process">How It Works</a>
-      <a href="#space">Our Space</a>
-      <a href="#trainers">Trainers</a>
-      <a href="#pricing">Membership</a>
+    <div class="nl">
+      <a onclick="sp('home')"      id="n-home" class="on">Home</a>
+      <a onclick="sp('courses')"   id="n-courses">Courses</a>
+      <a onclick="sp('workshops')" id="n-workshops">Workshops</a>
+      <a onclick="sp('camps')"     id="n-camps">Camps</a>
+      <a onclick="sp('connect')"   id="n-connect">Connect</a>
     </div>
-    <div class="nav-actions">
-      <button class="btn-ghost">Sign in</button>
-      <button class="btn-primary">Join Now</button>
+    <div class="nc">
+      <button class="btn-p" onclick="sp('connect')">Begin Practice</button>
     </div>
   </div>
 </nav>
 
-<!-- ═══════════════════════ HERO ═══════════════════════════════════════════ -->
-<section id="hero">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="container" style="position:relative;z-index:1;">
-    <div class="hero-eyebrow">
-      <span class="hero-eyebrow-dot"></span>
-      Now open · Pune's premier outdoor fitness studio
-    </div>
-    <h1 class="hero-title">
-      Train like<br/>
-      <span class="hl">nature</span> intended
-    </h1>
-    <p class="hero-sub">
-      Strength, movement, and endurance training rooted in ancient tradition — reimagined for the modern athlete.
-    </p>
-    <div class="hero-ctas">
-      <button class="btn-hero-primary">Start your journey →</button>
-      <button class="btn-hero-outline">Book a free trial</button>
-    </div>
-    <p class="hero-promo" style="margin-top:12px;"><span>First week free</span> for all new members. No contracts.</p>
+<!-- ═══════════════════════════════════════════════════
+     HOME
+═══════════════════════════════════════════════════ -->
+<div id="p-home" class="page on">
 
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-val"><span class="a">500</span>+</div>
-        <div class="hero-stat-label">Active members</div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="hi wrap">
+      <div class="hero-badge"><span class="dot"></span>Naggar, Himachal Pradesh · 1,890m</div>
+      <div class="hero-deva">मूल — The Root</div>
+      <h1>Where ancient tools meet<br/><span class="r">modern</span> movement <span class="g">science</span></h1>
+      <div class="hero-deva" style="margin-top:24px">शरीरं आद्यं मन्दिरम्, चलनं प्रार्थना।</div>
+      <div class="hero-mantra">"The body is the first temple, movement is its prayer."</div>
+      <div class="hero-ctas">
+        <button class="btn-p" onclick="sp('courses')">Explore the Practice →</button>
+        <button class="btn-o" onclick="sp('camps')">View Camps</button>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val"><span class="b">12</span></div>
-        <div class="hero-stat-label">Expert trainers</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val"><span class="a">30</span>+</div>
-        <div class="hero-stat-label">Classes per week</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<div class="divider"></div>
-
-<!-- ═══════════════════════ PROGRAMS ══════════════════════════════════════ -->
-<section id="programs">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-label">Programs</div>
-      <h2>Built for every kind of strength</h2>
-      <p>Six disciplines, one roof. Whether you're a beginner or a competitive athlete, we have a program for you.</p>
-    </div>
-    <div class="prog-grid">
-      <div class="prog-card">
-        <div class="prog-num">01</div>
-        <div class="prog-icon">🤸</div>
-        <h3>Calisthenics</h3>
-        <p>Master your own bodyweight — from pull-ups and dips to muscle-ups and handstands. Progressive skill-based curriculum for all levels.</p>
-        <div class="prog-tag">Beginner → Advanced</div>
-      </div>
-      <div class="prog-card">
-        <div class="prog-num">02</div>
-        <div class="prog-icon">🧘</div>
-        <h3>Yoga & Mobility</h3>
-        <p>Functional flexibility and breath work drawn from classical Hatha and Ashtanga traditions. Complements every other discipline on offer.</p>
-        <div class="prog-tag">All levels</div>
-      </div>
-      <div class="prog-card">
-        <div class="prog-num">03</div>
-        <div class="prog-icon">🏋️</div>
-        <h3>Strength & Conditioning</h3>
-        <p>Barbell, kettlebell, and functional movement programming. Periodised 12-week cycles with weekly progress tracking.</p>
-        <div class="prog-tag">3× / week</div>
-      </div>
-      <div class="prog-card">
-        <div class="prog-num">04</div>
-        <div class="prog-icon">🥋</div>
-        <h3>Malkhamb</h3>
-        <p>Traditional Indian pole gymnastics — the original total-body workout. Develops core strength, balance, and coordination simultaneously.</p>
-        <div class="prog-tag">Indian tradition</div>
-      </div>
-      <div class="prog-card">
-        <div class="prog-num">05</div>
-        <div class="prog-icon">🏃</div>
-        <h3>HIIT & Cardio</h3>
-        <p>High-intensity interval training sessions designed to build endurance, burn fat, and improve cardiovascular health in 45 minutes.</p>
-        <div class="prog-tag">45 min sessions</div>
-      </div>
-      <div class="prog-card">
-        <div class="prog-num">06</div>
-        <div class="prog-icon">🌿</div>
-        <h3>Outdoor Boot Camp</h3>
-        <p>Early morning sessions in the open air. Uses the park, trees, and natural terrain as your gym — the way it was always meant to be.</p>
-        <div class="prog-tag">6 AM daily</div>
+      <!-- values strip -->
+      <div class="values-strip">
+        <div class="v-cell">
+          <div class="v-sym">🪷</div>
+          <span class="v-skt">Sthira | Stillness</span>
+          <div class="v-name">Stillness</div>
+          <div class="v-desc">The mountain does not chase. Practice grows from steadiness.</div>
+        </div>
+        <div class="v-cell">
+          <div class="v-sym">🌊</div>
+          <span class="v-skt">Sukha | Flow</span>
+          <div class="v-name">Flow</div>
+          <div class="v-desc">Effortless effort. Movement like water — adapting, never forcing.</div>
+        </div>
+        <div class="v-cell">
+          <div class="v-sym">🔥</div>
+          <span class="v-skt">Sadhana | Practice</span>
+          <div class="v-name">Practice</div>
+          <div class="v-desc">Daily discipline. Not motivation — consistency. The dojo is a mirror.</div>
+        </div>
+        <div class="v-cell">
+          <div class="v-sym">🤲</div>
+          <span class="v-skt">Seva | Service</span>
+          <div class="v-name">Service</div>
+          <div class="v-desc">Movement belongs to everyone. The dojo door is open.</div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="divider"></div>
+  <div class="div"></div>
 
-<!-- ═══════════════════════ HOW IT WORKS ═══════════════════════════════════ -->
-<section id="process">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-label">How It Works</div>
-      <h2>Three steps to your best self</h2>
-      <p>We keep it simple. No overwhelming onboarding, no guesswork — just a clear path forward.</p>
+  <!-- TOOLS PREVIEW -->
+  <section class="tools-sec" style="background:linear-gradient(to bottom,var(--bg),#0e0906)">
+    <div class="wrap">
+      <div class="sh">
+        <div class="s-label" style="align-items:center">
+          <span class="dev">अभ्यास</span>
+          <span class="en">The Practice</span>
+        </div>
+        <h2>Seven tools. One path.</h2>
+        <p>Each tool teaches a unique lesson in mechanics, power, and flow. Not fitness equipment — extensions of the body.</p>
+      </div>
+      <div class="tools-grid">
+        <div class="tool-pill" onclick="sp('courses')">
+          <div class="tool-sym">◯</div>
+          <div class="tool-name">RECODE</div>
+          <div class="tool-type">Foundational</div>
+        </div>
+        <div class="tool-pill" onclick="sp('courses')">
+          <div class="tool-sym">✗</div>
+          <div class="tool-name">Steel Mace</div>
+          <div class="tool-type">Signature</div>
+        </div>
+        <div class="tool-pill" onclick="sp('courses')">
+          <div class="tool-sym">⚫</div>
+          <div class="tool-name">Kettlebell</div>
+          <div class="tool-type">Strength</div>
+        </div>
+        <div class="tool-pill" onclick="sp('courses')">
+          <div class="tool-sym">↻</div>
+          <div class="tool-name">Movement</div>
+          <div class="tool-type">Biomechanics</div>
+        </div>
+        <div class="tool-pill" onclick="sp('courses')">
+          <div class="tool-sym">⇧</div>
+          <div class="tool-name">Landmines</div>
+          <div class="tool-type">Rotational</div>
+        </div>
+        <div class="tool-pill" onclick="sp('courses')">
+          <div class="tool-sym">🔗</div>
+          <div class="tool-name">Rope Flow</div>
+          <div class="tool-type">Fluidity</div>
+        </div>
+        <div class="tool-pill" onclick="sp('courses')">
+          <div class="tool-sym">⚪</div>
+          <div class="tool-name">Bosu</div>
+          <div class="tool-type">Balance</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:36px">
+        <button class="btn-p" onclick="sp('courses')">See all courses & fees →</button>
+      </div>
     </div>
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-num">1</div>
-        <h3>Assess</h3>
-        <p>Your first session is a free movement assessment with one of our senior coaches. We identify your strengths, gaps, and goals — and map a personalised program.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-num">2</div>
-        <h3>Train</h3>
-        <p>Follow your program in our classes or during open gym hours. Every session is logged, every rep tracked. Our coaches check in weekly to keep you on track.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-num">3</div>
-        <h3>Progress</h3>
-        <p>Monthly fitness assessments measure your gains. Programs evolve as you do — so you're always training at the right intensity, never plateauing.</p>
+  </section>
+
+  <div class="div"></div>
+
+  <!-- THE SETTING -->
+  <section class="setting-sec">
+    <div class="wrap">
+      <div class="set-grid">
+        <div class="set-vis">
+          <div class="set-grid-bg"></div>
+          <div class="set-glow"></div>
+          <!-- Banyan / sacred tree SVG matching logo -->
+          <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg"
+               style="position:absolute;inset:0;width:100%;height:100%;padding:14px 18px">
+            <path d="M154 288 Q133 282 116 293" stroke="#4A1010" stroke-width="5" stroke-linecap="round"/>
+            <path d="M165 292 Q144 288 128 300" stroke="#4A1010" stroke-width="4" stroke-linecap="round"/>
+            <path d="M192 294 Q192 297 190 303" stroke="#4A1010" stroke-width="3" stroke-linecap="round"/>
+            <path d="M224 288 Q245 282 263 293" stroke="#4A1010" stroke-width="5" stroke-linecap="round"/>
+            <path d="M214 292 Q232 288 248 298" stroke="#4A1010" stroke-width="4" stroke-linecap="round"/>
+            <path d="M146 288 C143 263 139 230 146 196 C153 164 164 146 173 120" stroke="#6B1A1A" stroke-width="30" stroke-linecap="round"/>
+            <path d="M234 288 C237 263 240 230 234 196 C228 164 218 146 208 120" stroke="#6B1A1A" stroke-width="20" stroke-linecap="round"/>
+            <path d="M184 186 C186 160 189 132 191 100" stroke="#6B1A1A" stroke-width="24" stroke-linecap="round"/>
+            <path d="M160 174 C138 161 106 145 72 125" stroke="#6B1A1A" stroke-width="15" stroke-linecap="round"/>
+            <path d="M104 142 C82 126 60 112 36 96" stroke="#6B1A1A" stroke-width="9" stroke-linecap="round"/>
+            <path d="M78 134 C62 120 48 110 32 100" stroke="#6B1A1A" stroke-width="7" stroke-linecap="round"/>
+            <path d="M38 98 C26 86 18 76 10 64" stroke="#6B1A1A" stroke-width="5" stroke-linecap="round"/>
+            <path d="M220 167 C246 154 276 138 308 120" stroke="#6B1A1A" stroke-width="15" stroke-linecap="round"/>
+            <path d="M278 134 C302 118 324 106 350 92" stroke="#6B1A1A" stroke-width="9" stroke-linecap="round"/>
+            <path d="M304 126 C324 112 338 104 358 94" stroke="#6B1A1A" stroke-width="7" stroke-linecap="round"/>
+            <path d="M350 94 C362 82 370 72 378 62" stroke="#6B1A1A" stroke-width="5" stroke-linecap="round"/>
+            <path d="M182 130 C176 108 170 88 164 64" stroke="#6B1A1A" stroke-width="11" stroke-linecap="round"/>
+            <path d="M194 124 C200 102 206 82 208 58" stroke="#6B1A1A" stroke-width="9" stroke-linecap="round"/>
+            <path d="M180 100 C174 80 170 64 166 48" stroke="#6B1A1A" stroke-width="7" stroke-linecap="round"/>
+            <ellipse cx="194" cy="60" rx="62" ry="42" fill="#1A4D1A" opacity=".95"/>
+            <ellipse cx="142" cy="78" rx="46" ry="32" fill="#1A4D1A" opacity=".9"/>
+            <ellipse cx="250" cy="80" rx="44" ry="30" fill="#1A4D1A" opacity=".9"/>
+            <ellipse cx="26"  cy="82" rx="40" ry="27" fill="#1A4D1A" opacity=".88"/>
+            <ellipse cx="366" cy="76" rx="36" ry="25" fill="#1A4D1A" opacity=".88"/>
+            <ellipse cx="188" cy="46" rx="56" ry="38" fill="#2E7B2E"/>
+            <ellipse cx="138" cy="66" rx="42" ry="29" fill="#2E7B2E"/>
+            <ellipse cx="248" cy="68" rx="40" ry="28" fill="#2E7B2E"/>
+            <ellipse cx="24"  cy="70" rx="36" ry="25" fill="#2E7B2E"/>
+            <ellipse cx="368" cy="66" rx="32" ry="23" fill="#2E7B2E"/>
+            <ellipse cx="192" cy="30" rx="48" ry="33" fill="#368736"/>
+            <ellipse cx="156" cy="52" rx="34" ry="24" fill="#368736"/>
+            <ellipse cx="232" cy="54" rx="32" ry="23" fill="#368736"/>
+            <ellipse cx="20"  cy="60" rx="28" ry="20" fill="#368736"/>
+            <ellipse cx="372" cy="58" rx="26" ry="19" fill="#368736"/>
+            <ellipse cx="190" cy="16" rx="30" ry="21" fill="#3D9A3D" opacity=".85"/>
+            <ellipse cx="22"  cy="50" rx="20" ry="14" fill="#3D9A3D" opacity=".72"/>
+            <ellipse cx="374" cy="50" rx="18" ry="13" fill="#3D9A3D" opacity=".72"/>
+          </svg>
+          <div class="elev-badge">1,890m · Naggar</div>
+        </div>
+        <div class="set-text">
+          <div class="s-label">
+            <span class="dev" style="font-size:13px;color:var(--gold);opacity:.7;font-family:serif">The Dojo</span>
+            <span style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brick)">Where We Practice</span>
+          </div>
+          <h2>On packed earth, under a sacred tree</h2>
+          <p>Kasratshala is a movement arts dojo in Naggar, Himachal Pradesh. We blend ancient Indian tools with modern biomechanics to transform how you move. Not just muscles. Movement behaviour.</p>
+          <p>Rooted in the gurukul tradition: learning under a sacred tree, on packed earth, where guru and shishya share the same ground. The Dhauladhar range rises behind us. The Beas river flows below.</p>
+          <div class="loc-chips">
+            <span class="loc-chip">🏔 Dhauladhar range</span>
+            <span class="loc-chip">🌊 Beas river below</span>
+            <span class="loc-chip">🌲 Deodar forest</span>
+            <span class="loc-chip">📍 Naggar · HP</span>
+            <span class="loc-chip">⛰ 1,890m elevation</span>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="divider"></div>
-
-<!-- ═══════════════════════ OUR SPACE ══════════════════════════════════════ -->
-<section id="space">
-  <div class="container">
-    <div class="space-layout">
-      <div>
-        <div class="section-label">Our Space</div>
-        <h2 style="font-size:clamp(28px,3.5vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:14px;">
-          A shala built for serious training
-        </h2>
-        <p style="color:var(--text-muted);font-size:15px;max-width:440px;">
-          Open-air and indoor zones, natural equipment, and traditional training apparatus — all in one campus designed to push you further.
+  <!-- PHILOSOPHY STRIP -->
+  <section style="padding:56px 0;background:var(--bg)">
+    <div class="wrap">
+      <div style="background:var(--bg1);border:1px solid var(--bdx);border-radius:var(--rl);padding:36px 40px">
+        <div class="s-label" style="margin-bottom:20px">
+          <span class="dev" style="font-size:13px;color:var(--gold);opacity:.7;font-family:serif">दर्शण</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brick)">The Kasratshala Way</span>
+        </div>
+        <p style="font-size:16px;color:var(--muted);line-height:1.8;max-width:760px">
+          We believe the body is the first technology. Our tools are not fitness equipment — they are extensions of the body, each teaching a lesson in mechanics, power, and flow. We blend the ancient <em style="color:var(--gold)">akhara tradition</em> with modern movement science — because wisdom is timeless, and knowledge evolves.
         </p>
-        <div class="space-features">
-          <div class="space-feat">
-            <div>
-              <div class="space-feat-name">Outdoor Calisthenics Park</div>
-              <div class="space-feat-note">Pull-up bars, rings, parallel bars</div>
-            </div>
-            <div class="space-feat-val">24/7</div>
-          </div>
-          <div class="space-feat">
-            <div>
-              <div class="space-feat-name">Malkhamb Poles</div>
-              <div class="space-feat-note">Traditional & rope variants</div>
-            </div>
-            <div class="space-feat-val">6</div>
-          </div>
-          <div class="space-feat">
-            <div>
-              <div class="space-feat-name">Strength Hall</div>
-              <div class="space-feat-note">Barbells, kettlebells, sleds</div>
-            </div>
-            <div class="space-feat-val">2,000 sq ft</div>
-          </div>
-          <div class="space-feat">
-            <div>
-              <div class="space-feat-name">Yoga Shala</div>
-              <div class="space-feat-note">Natural ventilation, wooden floor</div>
-            </div>
-            <div class="space-feat-val">800 sq ft</div>
-          </div>
-        </div>
-      </div>
-      <div class="space-visual">
-        <div class="space-grid-bg"></div>
-        <!-- Banyan tree SVG — colours match logo exactly -->
-        <svg viewBox="0 0 400 260" fill="none" xmlns="http://www.w3.org/2000/svg"
-             style="position:absolute;inset:0;width:100%;height:100%;padding:18px 24px;">
-
-          <!-- ── ROOTS ── -->
-          <path d="M162 248 Q142 243 126 254" stroke="#4A1010" stroke-width="6" stroke-linecap="round"/>
-          <path d="M172 251 Q152 248 136 260" stroke="#4A1010" stroke-width="5" stroke-linecap="round"/>
-          <path d="M192 252 Q192 254 190 260" stroke="#4A1010" stroke-width="4" stroke-linecap="round"/>
-          <path d="M222 248 Q242 242 260 253" stroke="#4A1010" stroke-width="6" stroke-linecap="round"/>
-          <path d="M212 251 Q230 248 246 258" stroke="#4A1010" stroke-width="5" stroke-linecap="round"/>
-
-          <!-- ── MAIN TRUNK (wide, gnarled) ── -->
-          <path d="M155 248 C152 224 148 193 154 162 C160 135 170 120 178 98" stroke="#6B1A1A" stroke-width="30" stroke-linecap="round"/>
-          <path d="M232 248 C235 224 238 193 232 162 C226 135 216 120 208 98" stroke="#6B1A1A" stroke-width="20" stroke-linecap="round"/>
-          <!-- centre trunk merge -->
-          <path d="M186 155 C188 132 190 108 192 82" stroke="#6B1A1A" stroke-width="24" stroke-linecap="round"/>
-
-          <!-- ── LEFT MAIN BRANCH ── -->
-          <path d="M166 148 C144 136 112 122 80 105" stroke="#6B1A1A" stroke-width="15" stroke-linecap="round"/>
-          <!-- left sub-branches -->
-          <path d="M112 120 C92 106 70 93 48 80" stroke="#6B1A1A" stroke-width="9" stroke-linecap="round"/>
-          <path d="M90 114 C74 103 60 95 44 86" stroke="#6B1A1A" stroke-width="7" stroke-linecap="round"/>
-          <!-- left twigs -->
-          <path d="M52 82 C42 72 35 64 28 55" stroke="#6B1A1A" stroke-width="5" stroke-linecap="round"/>
-          <path d="M46 86 C38 76 34 68 28 60" stroke="#6B1A1A" stroke-width="4" stroke-linecap="round"/>
-
-          <!-- ── RIGHT MAIN BRANCH ── -->
-          <path d="M220 142 C245 130 272 116 304 100" stroke="#6B1A1A" stroke-width="15" stroke-linecap="round"/>
-          <!-- right sub-branches -->
-          <path d="M272 112 C294 98 314 87 338 75" stroke="#6B1A1A" stroke-width="9" stroke-linecap="round"/>
-          <path d="M296 105 C315 93 328 86 346 78" stroke="#6B1A1A" stroke-width="7" stroke-linecap="round"/>
-          <!-- right twigs -->
-          <path d="M336 76 C348 66 356 58 364 50" stroke="#6B1A1A" stroke-width="5" stroke-linecap="round"/>
-          <path d="M344 78 C354 68 360 62 366 54" stroke="#6B1A1A" stroke-width="4" stroke-linecap="round"/>
-
-          <!-- ── CENTRE UP-BRANCHES ── -->
-          <path d="M186 110 C180 90 174 72 168 52" stroke="#6B1A1A" stroke-width="11" stroke-linecap="round"/>
-          <path d="M196 106 C202 86 208 68 210 48" stroke="#6B1A1A" stroke-width="10" stroke-linecap="round"/>
-          <path d="M184 82 C178 66 174 54 170 40" stroke="#6B1A1A" stroke-width="7" stroke-linecap="round"/>
-
-          <!-- ── LEAF CLUSTERS — deepest shadow layer ── -->
-          <ellipse cx="196" cy="50" rx="60" ry="40" fill="#1A4D1A" opacity="0.95"/>
-          <ellipse cx="148" cy="66" rx="44" ry="30" fill="#1A4D1A" opacity="0.9"/>
-          <ellipse cx="250" cy="68" rx="42" ry="29" fill="#1A4D1A" opacity="0.9"/>
-          <ellipse cx="38"  cy="68" rx="40" ry="27" fill="#1A4D1A" opacity="0.9"/>
-          <ellipse cx="358" cy="62" rx="36" ry="25" fill="#1A4D1A" opacity="0.9"/>
-
-          <!-- ── LEAF CLUSTERS — mid green ── -->
-          <ellipse cx="192" cy="38" rx="54" ry="36" fill="#2E7B2E"/>
-          <ellipse cx="144" cy="55" rx="40" ry="27" fill="#2E7B2E"/>
-          <ellipse cx="248" cy="57" rx="37" ry="26" fill="#2E7B2E"/>
-          <ellipse cx="36"  cy="57" rx="36" ry="24" fill="#2E7B2E"/>
-          <ellipse cx="360" cy="54" rx="32" ry="22" fill="#2E7B2E"/>
-
-          <!-- ── LEAF CLUSTERS — front highlight ── -->
-          <ellipse cx="196" cy="24" rx="46" ry="30" fill="#368736"/>
-          <ellipse cx="162" cy="42" rx="34" ry="23" fill="#368736"/>
-          <ellipse cx="230" cy="44" rx="32" ry="22" fill="#368736"/>
-          <ellipse cx="32"  cy="49" rx="30" ry="20" fill="#368736"/>
-          <ellipse cx="362" cy="46" rx="26" ry="18" fill="#368736"/>
-
-          <!-- ── LEAF CLUSTERS — topmost bright tips ── -->
-          <ellipse cx="194" cy="12" rx="30" ry="20" fill="#3D9A3D" opacity="0.85"/>
-          <ellipse cx="34"  cy="40" rx="22" ry="15" fill="#3D9A3D" opacity="0.75"/>
-          <ellipse cx="362" cy="38" rx="20" ry="14" fill="#3D9A3D" opacity="0.75"/>
-        </svg>
-        <div class="space-label">Kasrat Shala Campus</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ═══════════════════════ LIVE STATS ═════════════════════════════════════ -->
-<section id="stats">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-label">Live Activity</div>
-      <h2>The shala, in real time</h2>
-      <p>Track attendance, class availability, and member milestones as they happen.</p>
-    </div>
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-val"><span class="a">87</span></div>
-        <div class="stat-label">Members training today</div>
-        <div class="stat-change">▲ +12 from last Tuesday</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val"><span class="b">4</span></div>
-        <div class="stat-label">Classes remaining today</div>
-        <div class="stat-change">Next at 6:00 PM</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val"><span class="a">2,841</span></div>
-        <div class="stat-label">Total sessions this month</div>
-        <div class="stat-change">▲ +18% from last month</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val"><span class="b">98</span>%</div>
-        <div class="stat-label">Member satisfaction score</div>
-        <div class="stat-change" style="color:var(--accent-lite);">● Updated weekly</div>
-      </div>
-    </div>
-    <div class="stats-bottom">
-      <div class="stats-panel">
-        <h4>Class popularity this week</h4>
-        <div class="bar-row">
-          <div class="bar-item">
-            <span class="bar-label">Calisthenics</span>
-            <div class="bar-track"><div class="bar-fill m" style="width:92%"></div></div>
-            <span class="bar-pct">92%</span>
-          </div>
-          <div class="bar-item">
-            <span class="bar-label">Outdoor Boot Camp</span>
-            <div class="bar-track"><div class="bar-fill g" style="width:84%"></div></div>
-            <span class="bar-pct">84%</span>
-          </div>
-          <div class="bar-item">
-            <span class="bar-label">Malkhamb</span>
-            <div class="bar-track"><div class="bar-fill m" style="width:71%"></div></div>
-            <span class="bar-pct">71%</span>
-          </div>
-          <div class="bar-item">
-            <span class="bar-label">Yoga & Mobility</span>
-            <div class="bar-track"><div class="bar-fill g" style="width:66%"></div></div>
-            <span class="bar-pct">66%</span>
-          </div>
-        </div>
-      </div>
-      <div class="stats-panel">
-        <h4>Today's class schedule</h4>
-        <div class="schedule-list">
-          <div class="schedule-item">
-            <div class="sch-dot g"></div>
-            <div class="sch-info"><strong>Outdoor Boot Camp</strong> <span>6 seats left</span></div>
-            <div class="sch-time">6:00 AM</div>
-          </div>
-          <div class="schedule-item">
-            <div class="sch-dot r"></div>
-            <div class="sch-info"><strong>Calisthenics L2</strong> <span>Full</span></div>
-            <div class="sch-time">8:00 AM</div>
-          </div>
-          <div class="schedule-item">
-            <div class="sch-dot t"></div>
-            <div class="sch-info"><strong>Yoga & Mobility</strong> <span>12 seats left</span></div>
-            <div class="sch-time">10:00 AM</div>
-          </div>
-          <div class="schedule-item">
-            <div class="sch-dot g"></div>
-            <div class="sch-info"><strong>Malkhamb Intro</strong> <span>8 seats left</span></div>
-            <div class="sch-time">6:00 PM</div>
-          </div>
-          <div class="schedule-item">
-            <div class="sch-dot r"></div>
-            <div class="sch-info"><strong>HIIT &amp; Conditioning</strong> <span>4 seats left</span></div>
-            <div class="sch-time">7:30 PM</div>
-          </div>
+        <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap">
+          <button class="btn-p" onclick="sp('courses')">Start with RECODE</button>
+          <button class="btn-o" onclick="sp('camps')">Join a camp</button>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="divider"></div>
-
-<!-- ═══════════════════════ TRAINERS ═══════════════════════════════════════ -->
-<section id="trainers">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-label">Trainers</div>
-      <h2>Coached by the best</h2>
-      <p>Every trainer at Kasrat Shala is nationally certified and brings years of competitive or specialist experience.</p>
+  <!-- MANTRA BAND -->
+  <div class="div"></div>
+  <section class="mantra-band">
+    <div class="mantra-deva">शरीरं आद्यं मन्दिरम्, चलनं प्रार्थना।</div>
+    <div class="mantra-en">"The body is the first temple, movement is its prayer."</div>
+    <div style="margin-top:28px">
+      <button class="btn-p" onclick="sp('connect')">Come find us →</button>
     </div>
-    <div class="trainers-grid">
-      <div class="trainer-card">
-        <div class="trainer-avatar" style="background:rgba(139,34,34,0.2);">🧑</div>
-        <div class="trainer-name">Arjun Pawar</div>
-        <div class="trainer-spec">Calisthenics</div>
-        <div class="trainer-exp">8 years · National medallist</div>
+  </section>
+</div><!-- /home -->
+
+<!-- ═══════════════════════════════════════════════════
+     COURSES
+═══════════════════════════════════════════════════ -->
+<div id="p-courses" class="page">
+  <section class="page-hdr">
+    <div class="wrap" style="position:relative;z-index:1">
+      <div class="sub-deva">अभ्यास — The Practice</div>
+      <h1>Courses</h1>
+      <p>On the stone floor, under the sacred tree. Small batches, deep work, certified coaching.</p>
+    </div>
+  </section>
+  <div class="div"></div>
+
+  <section style="padding:56px 0">
+    <div class="wrap">
+      <div class="flt-row">
+        <button class="flt on" onclick="fc(this,'all')">All Tools</button>
+        <button class="flt" onclick="fc(this,'foundation')">Foundational</button>
+        <button class="flt" onclick="fc(this,'strength')">Strength</button>
+        <button class="flt" onclick="fc(this,'flow')">Flow</button>
+        <button class="flt" onclick="fc(this,'mechanics')">Mechanics</button>
+        <button class="flt" onclick="fc(this,'balance')">Balance</button>
       </div>
-      <div class="trainer-card">
-        <div class="trainer-avatar" style="background:rgba(46,123,46,0.2);">👩</div>
-        <div class="trainer-name">Priya Desai</div>
-        <div class="trainer-spec">Yoga & Mobility</div>
-        <div class="trainer-exp">10 years · RYT-500 certified</div>
-      </div>
-      <div class="trainer-card">
-        <div class="trainer-avatar" style="background:rgba(196,131,90,0.2);">🧔</div>
-        <div class="trainer-name">Rajan More</div>
-        <div class="trainer-spec">Malkhamb</div>
-        <div class="trainer-exp">15 years · State champion</div>
-      </div>
-      <div class="trainer-card">
-        <div class="trainer-avatar" style="background:rgba(139,34,34,0.2);">👩</div>
-        <div class="trainer-name">Sneha Kulkarni</div>
-        <div class="trainer-spec">Strength & Conditioning</div>
-        <div class="trainer-exp">6 years · NSCA-CSCS</div>
+
+      <div class="c-grid" id="cg">
+
+        <!-- RECODE -->
+        <div class="c-card" data-cat="foundation">
+          <div class="c-head">
+            <div class="c-top">
+              <div class="c-sym">◯</div>
+              <span class="tag t-m">Foundational</span>
+            </div>
+            <h3>RECODE</h3>
+            <p>Rewrite your movement patterns from the ground up. Breath, alignment, flow. The essential starting point for any practice.</p>
+          </div>
+          <div class="c-body">
+            <div class="c-row"><span class="mi">🗓</span>4 Weeks</div>
+            <div class="c-row"><span class="mi">👥</span>All Levels · In-Person</div>
+            <div class="c-row"><span class="mi">📍</span>Kasratshala Dojo, Naggar HP</div>
+            <div class="c-tags">
+              <span class="tag t-g">Beginner welcome</span>
+              <span class="tag t-d">Starting point</span>
+            </div>
+            <div class="c-price"><span class="amt">₹12,000</span><span class="per">/ course</span></div>
+            <button class="btn-g" onclick="sp('connect')" style="width:100%">Enroll →</button>
+          </div>
+        </div>
+
+        <!-- Steel Mace Flow -->
+        <div class="c-card sig" data-cat="flow">
+          <div class="c-head" style="background:rgba(107,26,26,.08)">
+            <div class="c-top">
+              <div class="c-sym">✗</div>
+              <span class="tag t-m">Signature</span>
+            </div>
+            <h3>Steel Mace Flow</h3>
+            <p>The ancient gada meets modern flow. Rotational power, shoulder stability, fluid multi-planar movement across 6 weeks.</p>
+          </div>
+          <div class="c-body">
+            <div class="c-row"><span class="mi">🗓</span>6 Weeks</div>
+            <div class="c-row"><span class="mi">👥</span>All Levels · In-Person</div>
+            <div class="c-row"><span class="mi">📍</span>Kasratshala Dojo, Naggar HP</div>
+            <div class="c-tags">
+              <span class="tag t-m">Ancient gada lineage</span>
+              <span class="tag t-g">All levels</span>
+            </div>
+            <div class="c-price"><span class="amt">₹18,000</span><span class="per">/ course</span></div>
+            <button class="btn-p" onclick="sp('connect')" style="width:100%">Enroll →</button>
+          </div>
+        </div>
+
+        <!-- Kettlebell -->
+        <div class="c-card" data-cat="strength">
+          <div class="c-head">
+            <div class="c-top">
+              <div class="c-sym">⚫</div>
+              <span class="tag t-a">Strength</span>
+            </div>
+            <h3>Kettlebell</h3>
+            <p>Swing, clean, press, snatch. Explosive power, endurance, and control — foundational to advanced ballistics.</p>
+          </div>
+          <div class="c-body">
+            <div class="c-row"><span class="mi">🗓</span>6 Weeks</div>
+            <div class="c-row"><span class="mi">👥</span>All Levels · In-Person</div>
+            <div class="c-row"><span class="mi">📍</span>Kasratshala Dojo, Naggar HP</div>
+            <div class="c-tags">
+              <span class="tag t-g">Ballistic power</span>
+              <span class="tag t-d">All levels</span>
+            </div>
+            <div class="c-price"><span class="amt">₹15,000</span><span class="per">/ course</span></div>
+            <button class="btn-g" onclick="sp('connect')" style="width:100%">Enroll →</button>
+          </div>
+        </div>
+
+        <!-- Movement Mechanics -->
+        <div class="c-card" data-cat="mechanics">
+          <div class="c-head">
+            <div class="c-top">
+              <div class="c-sym">↻</div>
+              <span class="tag t-d">Biomechanics</span>
+            </div>
+            <h3>Movement Mechanics</h3>
+            <p>Deep dive into human biomechanics. Understand the levers, angles, and forces that shape every movement you make.</p>
+          </div>
+          <div class="c-body">
+            <div class="c-row"><span class="mi">🗓</span>8 Weeks</div>
+            <div class="c-row"><span class="mi">👥</span>Intermediate · In-Person</div>
+            <div class="c-row"><span class="mi">📍</span>Kasratshala Dojo, Naggar HP</div>
+            <div class="c-tags">
+              <span class="tag t-m">Intermediate</span>
+              <span class="tag t-d">Science-forward</span>
+            </div>
+            <div class="c-price"><span class="amt">₹22,000</span><span class="per">/ course</span></div>
+            <button class="btn-g" onclick="sp('connect')" style="width:100%">Enroll →</button>
+          </div>
+        </div>
+
+        <!-- Landmines -->
+        <div class="c-card" data-cat="strength">
+          <div class="c-head">
+            <div class="c-top">
+              <div class="c-sym">⇧</div>
+              <span class="tag t-a">Rotational</span>
+            </div>
+            <h3>Landmines</h3>
+            <p>Press, pivot, lunge — unlock rotational power through the landmine. Transform how you generate and transfer force.</p>
+          </div>
+          <div class="c-body">
+            <div class="c-row"><span class="mi">🗓</span>4 Weeks</div>
+            <div class="c-row"><span class="mi">👥</span>All Levels · In-Person</div>
+            <div class="c-row"><span class="mi">📍</span>Kasratshala Dojo, Naggar HP</div>
+            <div class="c-tags">
+              <span class="tag t-g">All levels</span>
+              <span class="tag t-d">Rotational power</span>
+            </div>
+            <div class="c-price"><span class="amt">₹10,000</span><span class="per">/ course</span></div>
+            <button class="btn-g" onclick="sp('connect')" style="width:100%">Enroll →</button>
+          </div>
+        </div>
+
+        <!-- Rope Flow -->
+        <div class="c-card" data-cat="flow">
+          <div class="c-head">
+            <div class="c-top">
+              <div class="c-sym">🔗</div>
+              <span class="tag t-g">Fluidity</span>
+            </div>
+            <h3>Rope Flow</h3>
+            <p>Continuous wave-like movement. Shoulder integrity, grip strength, meditative flow — one wave into the next.</p>
+          </div>
+          <div class="c-body">
+            <div class="c-row"><span class="mi">🗓</span>4 Weeks</div>
+            <div class="c-row"><span class="mi">👥</span>All Levels · In-Person</div>
+            <div class="c-row"><span class="mi">📍</span>Kasratshala Dojo, Naggar HP</div>
+            <div class="c-tags">
+              <span class="tag t-g">Meditative</span>
+              <span class="tag t-d">All levels</span>
+            </div>
+            <div class="c-price"><span class="amt">₹10,000</span><span class="per">/ course</span></div>
+            <button class="btn-g" onclick="sp('connect')" style="width:100%">Enroll →</button>
+          </div>
+        </div>
+
+        <!-- Bosu -->
+        <div class="c-card" data-cat="balance">
+          <div class="c-head">
+            <div class="c-top">
+              <div class="c-sym">⚪</div>
+              <span class="tag t-d">Balance</span>
+            </div>
+            <h3>Bosu</h3>
+            <p>Proprioception, stability, reactive control. Trains your nervous system to adapt, respond, and stabilize under load.</p>
+          </div>
+          <div class="c-body">
+            <div class="c-row"><span class="mi">🗓</span>4 Weeks</div>
+            <div class="c-row"><span class="mi">👥</span>All Levels · In-Person</div>
+            <div class="c-row"><span class="mi">📍</span>Kasratshala Dojo, Naggar HP</div>
+            <div class="c-tags">
+              <span class="tag t-g">All levels</span>
+              <span class="tag t-d">Nervous system</span>
+            </div>
+            <div class="c-price"><span class="amt">₹10,000</span><span class="per">/ course</span></div>
+            <button class="btn-g" onclick="sp('connect')" style="width:100%">Enroll →</button>
+          </div>
+        </div>
+
+      </div><!-- /cg -->
+
+      <div style="background:var(--bg1);border:1px solid var(--bdx);border-radius:var(--rl);
+                  padding:26px 28px;margin-top:28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <div style="font-size:20px">📋</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px">Not sure where to start?</div>
+          <div style="font-size:12px;color:var(--muted)">RECODE is the essential starting point for every practice. It resets your movement foundation before you pick up any tool.</div>
+        </div>
+        <button class="btn-p" onclick="sp('connect')">Write to us</button>
       </div>
     </div>
-    <div class="certifications">
-      <span class="cert-badge">NSCA Certified</span>
-      <span class="cert-badge">RYT-500 Yoga Alliance</span>
-      <span class="cert-badge">SAI Malkhamb</span>
-      <span class="cert-badge">ACSM CPT</span>
-      <span class="cert-badge">First Aid &amp; CPR</span>
+  </section>
+</div><!-- /courses -->
+
+<!-- ═══════════════════════════════════════════════════
+     WORKSHOPS
+═══════════════════════════════════════════════════ -->
+<div id="p-workshops" class="page">
+  <section class="page-hdr">
+    <div class="wrap" style="position:relative;z-index:1">
+      <div class="sub-deva">कार्यशाला — Workshop</div>
+      <h1>Workshops</h1>
+      <p>Intensive deep-dives into specific practices. Open to members and non-members alike.</p>
     </div>
-  </div>
-</section>
+  </section>
+  <div class="div"></div>
 
-<div class="divider"></div>
+  <section style="padding:56px 0">
+    <div class="wrap">
+      <div class="ws-grid">
 
-<!-- ═══════════════════════ PHILOSOPHY ════════════════════════════════════ -->
-<section id="philosophy">
-  <div class="container">
-    <div class="phil-layout">
+        <!-- Featured: Steel Mace Cert -->
+        <div class="ws feat">
+          <div style="display:grid;grid-template-columns:1fr 280px;gap:28px;align-items:start" class="ws-feat-inner">
+            <div>
+              <div class="ws-chip">📅 2026 · Apr · Aug · Dec</div>
+              <div style="display:flex;gap:8px;margin-bottom:12px">
+                <span class="tag t-m">Certification</span>
+                <span class="tag t-a">L1</span>
+              </div>
+              <h3>Steel Mace Flow — Certification L1</h3>
+              <p>Master 12 foundational flows, progressions, regressions, and teaching methodology. For practitioners ready to teach. This is where your personal practice becomes your professional path.</p>
+              <p style="color:var(--dim);font-size:12px;margin-top:8px">Includes written assessment, practical examination, and internationally recognised certification on completion.</p>
+              <div class="ws-meta" style="margin-top:16px">
+                <span class="ws-mi">📅 3 sessions across 3 months</span>
+                <span class="ws-mi">👥 12 participants max per cohort</span>
+                <span class="ws-mi">📍 Kasratshala Dojo, Naggar</span>
+              </div>
+            </div>
+            <div style="background:var(--bg2);border:1px solid var(--bdx);border-radius:var(--r);padding:22px">
+              <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:5px">Certification fee</div>
+              <div style="font-size:28px;font-weight:800;margin-bottom:4px">₹25,000</div>
+              <div style="font-size:12px;color:var(--muted);margin-bottom:16px">All sessions included · certificate on completion</div>
+              <button class="btn-p" onclick="sp('connect')" style="width:100%">Express interest</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rotation / Coiling -->
+        <div class="ws">
+          <div class="ws-chip">📅 Monthly · Ongoing</div>
+          <h3>Rotation / Coiling</h3>
+          <p>The spiral mechanics that underpin steel mace, landmine, and every twisting movement pattern. A recurring monthly session that grows with you each time you attend.</p>
+          <div class="ws-meta">
+            <span class="ws-mi">📅 Monthly schedule</span>
+            <span class="ws-mi">⏱ 3 hours</span>
+            <span class="ws-mi">👥 Open group</span>
+          </div>
+          <div class="ws-foot">
+            <div class="ws-price">₹3,500</div>
+            <div class="ws-avail">Open every month</div>
+            <button class="btn-o" onclick="sp('connect')">Book next session</button>
+          </div>
+        </div>
+
+        <!-- Kettlebell Ballistics -->
+        <div class="ws">
+          <div class="ws-chip">📅 2026 · Mar · Jul · Nov</div>
+          <h3>Kettlebell Ballistics Intensive</h3>
+          <p>Three days of pure ballistic power. Swing, snatch, clean & jerk — refine technique and increase output. For those who already know the basic movements and want to go deeper.</p>
+          <div class="ws-meta">
+            <span class="ws-mi">📅 3 days</span>
+            <span class="ws-mi">⏱ Full days</span>
+            <span class="ws-mi">👥 10 max</span>
+          </div>
+          <div class="ws-foot">
+            <div class="ws-price">₹8,000</div>
+            <div class="ws-avail ltd">Limited slots</div>
+            <button class="btn-p" onclick="sp('connect')">Reserve spot</button>
+          </div>
+        </div>
+
+      </div><!-- /ws-grid -->
+
+      <div style="background:var(--bg1);border:1px solid var(--bdx);border-radius:var(--rl);
+                  padding:26px 28px;margin-top:28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <div style="font-size:20px">🔔</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;margin-bottom:3px">Stay in the loop</div>
+          <div style="font-size:12px;color:var(--muted)">New workshop dates announced on Instagram and by email. Follow @kasratshala or write to us to be added to the mailing list.</div>
+        </div>
+        <button class="btn-p" onclick="sp('connect')">Get notified</button>
+      </div>
+    </div>
+  </section>
+</div><!-- /workshops -->
+
+<!-- ═══════════════════════════════════════════════════
+     CAMPS
+═══════════════════════════════════════════════════ -->
+<div id="p-camps" class="page">
+  <section class="page-hdr" style="background:linear-gradient(to bottom,rgba(107,26,26,.06),transparent)">
+    <div class="wrap" style="position:relative;z-index:1">
+      <div class="sub-deva">डुबकी — Immersion</div>
+      <h1>Camps</h1>
+      <p>Residential & Online — same practice, different paths. All residential camps include accommodation, organic meals, and daily practice.</p>
+    </div>
+  </section>
+  <div class="div"></div>
+
+  <section style="padding:56px 0">
+    <div class="wrap">
+
+      <!-- Quote -->
+      <div style="text-align:center;padding:0 0 44px;font-size:15px;color:var(--muted);
+                  font-style:italic;border-bottom:1px solid var(--bdx);margin-bottom:44px">
+        "Come for the practice, stay for the silence between sessions."
+      </div>
+
+      <div class="camp-grid">
+
+        <!-- Spring -->
+        <div class="camp">
+          <div class="camp-body">
+            <div class="camp-season">🌸 Spring</div>
+            <h3>Awakening the Body</h3>
+            <div class="camp-dates">Mar 15–21 · 7 Days · Residential</div>
+            <p>As snow melts we open the dojo for renewal. Daily steel mace, kettlebell, rope flow with Himalayan sunrise practice. All inclusive.</p>
+            <div class="camp-feats">
+              <div class="cf">Daily steel mace flow at sunrise, facing the Dhauladhar</div>
+              <div class="cf">Kettlebell and rope flow sessions through the day</div>
+              <div class="cf">Evening philosophy and breathwork</div>
+              <div class="cf">All accommodation and organic meals included</div>
+              <div class="cf">Personal movement assessment and take-home program</div>
+            </div>
+            <div class="camp-tags">
+              <span class="tag t-g">All levels</span>
+              <span class="tag t-a">Residential</span>
+              <span class="tag t-d">Meals included</span>
+            </div>
+          </div>
+          <div class="camp-side">
+            <div class="cd"><div class="cd-l">Dates</div><div class="cd-v">Mar 15 – 21</div></div>
+            <div class="cd"><div class="cd-l">Duration</div><div class="cd-v">7 days</div></div>
+            <div class="cd"><div class="cd-l">Location</div><div class="cd-v">Naggar, HP</div></div>
+            <div class="cd"><div class="cd-l">Type</div><div class="cd-v">Residential</div></div>
+            <div class="camp-price">
+              <span class="amt">₹35,000</span>
+              <span class="note">per person · fully inclusive</span>
+            </div>
+            <button class="btn-p" onclick="sp('connect')" style="width:100%">Reserve →</button>
+          </div>
+        </div>
+
+        <!-- Summer -->
+        <div class="camp">
+          <div class="camp-body">
+            <div class="camp-season">🌿 Summer</div>
+            <h3>Monsoon Intensive</h3>
+            <div class="camp-dates">Jul 10–20 · 10 Days · Residential</div>
+            <p>The rains bring inward energy. RECODE + Steel Mace Cert prep + Movement Mechanics + evening philosophy. Deep immersion.</p>
+            <div class="camp-feats">
+              <div class="cf">RECODE foundation reset — first 3 days</div>
+              <div class="cf">Steel Mace Flow certification preparation track</div>
+              <div class="cf">Movement Mechanics — biomechanics intensive</div>
+              <div class="cf">Evening philosophy sessions and group practice</div>
+              <div class="cf">All accommodation and organic meals included</div>
+              <div class="cf">Personal take-home program designed by your coach</div>
+            </div>
+            <div class="camp-tags">
+              <span class="tag t-m">Intermediate +</span>
+              <span class="tag t-a">10 days · deep immersion</span>
+            </div>
+          </div>
+          <div class="camp-side">
+            <div class="cd"><div class="cd-l">Dates</div><div class="cd-v">Jul 10 – 20</div></div>
+            <div class="cd"><div class="cd-l">Duration</div><div class="cd-v">10 days</div></div>
+            <div class="cd"><div class="cd-l">Location</div><div class="cd-v">Naggar, HP</div></div>
+            <div class="cd"><div class="cd-l">Type</div><div class="cd-v">Residential</div></div>
+            <div class="camp-price">
+              <span class="amt">₹55,000</span>
+              <span class="note">per person · fully inclusive</span>
+              <span class="early">Flagship camp · 12 participants max</span>
+            </div>
+            <button class="btn-p" onclick="sp('connect')" style="width:100%">Reserve →</button>
+          </div>
+        </div>
+
+        <!-- Autumn -->
+        <div class="camp">
+          <div class="camp-body">
+            <div class="camp-season">🍂 Autumn</div>
+            <h3>Harvest Flow Camp</h3>
+            <div class="camp-dates">Oct 5–12 · 7 Days · Residential</div>
+            <p>Golden light through deodar needles. A celebration of practice — all tools, all levels, one community. All inclusive.</p>
+            <div class="camp-feats">
+              <div class="cf">All seven tools across 7 days — rotate through every discipline</div>
+              <div class="cf">Morning practice in the deodar forest as light breaks</div>
+              <div class="cf">Community evening sessions and shared reflection</div>
+              <div class="cf">All accommodation and organic meals included</div>
+            </div>
+            <div class="camp-tags">
+              <span class="tag t-g">All levels</span>
+              <span class="tag t-a">Community camp</span>
+            </div>
+          </div>
+          <div class="camp-side">
+            <div class="cd"><div class="cd-l">Dates</div><div class="cd-v">Oct 5 – 12</div></div>
+            <div class="cd"><div class="cd-l">Duration</div><div class="cd-v">7 days</div></div>
+            <div class="cd"><div class="cd-l">Location</div><div class="cd-v">Naggar, HP</div></div>
+            <div class="cd"><div class="cd-l">Type</div><div class="cd-v">Residential</div></div>
+            <div class="camp-price">
+              <span class="amt">₹38,000</span>
+              <span class="note">per person · fully inclusive</span>
+            </div>
+            <button class="btn-p" onclick="sp('connect')" style="width:100%">Reserve →</button>
+          </div>
+        </div>
+
+        <!-- Winter -->
+        <div class="camp">
+          <div class="camp-body">
+            <div class="camp-season">❄️ Winter</div>
+            <h3>Silent Practice Retreat</h3>
+            <div class="camp-dates">Dec 27–Jan 2 · 7 Days · Residential</div>
+            <p>Snow encircles the dojo. Silence between movements. Minimal instruction, maximal self-discovery. New year in stillness.</p>
+            <div class="camp-feats">
+              <div class="cf">Minimal verbal instruction — practice by example and intuition</div>
+              <div class="cf">Long unstructured practice windows — self-directed inquiry</div>
+              <div class="cf">Solo movement journaling and daily reflection</div>
+              <div class="cf">New Year's transition practice at midnight</div>
+              <div class="cf">All accommodation and organic meals included</div>
+            </div>
+            <div class="camp-tags">
+              <span class="tag t-m">Intermediate +</span>
+              <span class="tag t-d">Silent retreat</span>
+              <span class="tag t-a">New Year</span>
+            </div>
+          </div>
+          <div class="camp-side">
+            <div class="cd"><div class="cd-l">Dates</div><div class="cd-v">Dec 27 – Jan 2</div></div>
+            <div class="cd"><div class="cd-l">Duration</div><div class="cd-v">7 days</div></div>
+            <div class="cd"><div class="cd-l">Location</div><div class="cd-v">Naggar, HP</div></div>
+            <div class="cd"><div class="cd-l">Type</div><div class="cd-v">Residential</div></div>
+            <div class="camp-price">
+              <span class="amt">₹40,000</span>
+              <span class="note">per person · fully inclusive</span>
+              <span class="early">New Year transition · limited seats</span>
+            </div>
+            <button class="btn-p" onclick="sp('connect')" style="width:100%">Reserve →</button>
+          </div>
+        </div>
+
+      </div><!-- /camp-grid -->
+    </div>
+  </section>
+</div><!-- /camps -->
+
+<!-- ═══════════════════════════════════════════════════
+     CONNECT
+═══════════════════════════════════════════════════ -->
+<div id="p-connect" class="page">
+  <section class="page-hdr">
+    <div class="wrap" style="position:relative;z-index:1">
+      <div class="sub-deva">संवाद — Dialogue</div>
+      <h1>Connect</h1>
+      <p>Reach out. The dojo responds.</p>
+    </div>
+  </section>
+  <div class="div"></div>
+
+  <div class="wrap">
+    <div class="conn-grid">
+
+      <!-- Info -->
       <div>
-        <div class="section-label">Our Philosophy</div>
-        <h2 style="font-size:clamp(28px,3.5vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:14px;">
-          Rooted in tradition, built for today
-        </h2>
-        <p style="color:var(--text-muted);font-size:15px;">
-          The banyan tree grows deep before it grows tall. We train the same way — building an unshakeable foundation before chasing performance.
-        </p>
-        <div class="phil-pillars">
-          <div class="pillar">
-            <div class="pillar-icon">🌱</div>
+        <h2>The dojo awaits</h2>
+        <p>Under the sacred tree, on the ancient akhara ground in Naggar. Write to us about any course, workshop, or camp — or just to say hello.</p>
+
+        <div class="c-blocks">
+          <div class="cb">
+            <div class="cb-ico">📍</div>
             <div>
-              <h4>Foundation First</h4>
-              <p>Every program starts with movement quality — not weight, not reps. Build the base; the performance follows.</p>
+              <h4>Address</h4>
+              <p>Kasratshala Movement Arts Dojo<br/>Naggar, Kullu District<br/>Himachal Pradesh 175130, India</p>
             </div>
           </div>
-          <div class="pillar">
-            <div class="pillar-icon">🤝</div>
+          <div class="cb">
+            <div class="cb-ico">✉️</div>
             <div>
-              <h4>Community Over Competition</h4>
-              <p>We cheer harder for personal bests than for podium finishes. Your journey is yours — we're here to support it.</p>
+              <h4>Email</h4>
+              <a href="mailto:hello@kasratshala.com">hello@kasratshala.com</a>
             </div>
           </div>
-          <div class="pillar">
-            <div class="pillar-icon">🌿</div>
+          <div class="cb">
+            <div class="cb-ico">📸</div>
             <div>
-              <h4>Natural Movement</h4>
-              <p>Climb, hang, crawl, sprint. Human bodies were built to move in nature — we make sure ours still can.</p>
+              <h4>Social</h4>
+              <a href="#">@kasratshala — Instagram · YouTube</a>
             </div>
           </div>
-          <div class="pillar">
-            <div class="pillar-icon">📈</div>
+          <div class="cb">
+            <div class="cb-ico">⛰</div>
             <div>
-              <h4>Measurable Progress</h4>
-              <p>Monthly assessments mean you always know where you stand and exactly what to do next.</p>
+              <h4>Elevation & Location</h4>
+              <p>1,890m · Deodar forest · Ancient akhara ground</p>
             </div>
           </div>
         </div>
-      </div>
-      <div class="values-panel">
-        <h4>Member outcomes after 90 days</h4>
-        <div class="value-item">
-          <div class="value-header">
-            <span class="value-name">Strength improvement</span>
-            <span class="value-score">+34%</span>
-          </div>
-          <div class="value-bar-track"><div class="value-bar-fill" style="width:84%"></div></div>
-        </div>
-        <div class="value-item">
-          <div class="value-header">
-            <span class="value-name">Mobility / flexibility</span>
-            <span class="value-score">+28%</span>
-          </div>
-          <div class="value-bar-track"><div class="value-bar-fill" style="width:70%"></div></div>
-        </div>
-        <div class="value-item">
-          <div class="value-header">
-            <span class="value-name">Cardiovascular endurance</span>
-            <span class="value-score">+41%</span>
-          </div>
-          <div class="value-bar-track"><div class="value-bar-fill" style="width:90%"></div></div>
-        </div>
-        <div class="value-item">
-          <div class="value-header">
-            <span class="value-name">Body composition</span>
-            <span class="value-score">+22%</span>
-          </div>
-          <div class="value-bar-track"><div class="value-bar-fill" style="width:55%"></div></div>
-        </div>
-        <div class="value-item">
-          <div class="value-header">
-            <span class="value-name">Member retention rate</span>
-            <span class="value-score">94%</span>
-          </div>
-          <div class="value-bar-track"><div class="value-bar-fill" style="width:94%"></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<div class="divider"></div>
-
-<!-- ═══════════════════════ TESTIMONIAL ═══════════════════════════════════ -->
-<section id="testimonial">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-label">Stories</div>
-      <h2>What our members say</h2>
-    </div>
-    <div class="testimonial-card">
-      <p class="testimonial-quote">
-        "I'd tried five gyms in Pune before Kasrat Shala. None of them felt like this. The outdoor training, the Malkhamb sessions, the community — I've made more progress in three months here than in two years elsewhere."
-      </p>
-      <div class="testimonial-author">
-        <div class="author-avatar">RK</div>
-        <div>
-          <div class="stars">★★★★★</div>
-          <div class="author-name">Rohit Kulkarni</div>
-          <div class="author-title">Member since 2024 · Software Engineer</div>
+        <div style="margin-top:24px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brick);margin-bottom:10px">Payment</div>
+          <div class="payment-row">
+            <span class="pay-badge">UPI</span>
+            <span class="pay-badge">Bank Transfer</span>
+            <span class="pay-badge">Razorpay</span>
+            <span class="pay-badge">PayPal (international)</span>
+            <span class="pay-badge">EMI for courses above ₹15,000</span>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<div class="divider"></div>
-
-<!-- ═══════════════════════ MEMBERSHIP ════════════════════════════════════ -->
-<section id="pricing">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-label">Membership</div>
-      <h2>Invest in your body</h2>
-      <p>Simple monthly plans. Cancel anytime. First week always free.</p>
-    </div>
-    <div class="pricing-grid">
-
-      <div class="pricing-card">
-        <div class="pricing-tier">Starter</div>
-        <div class="pricing-price">₹1,499<span>/mo</span></div>
-        <div class="pricing-period">Month-to-month · no commitment</div>
-        <div class="pricing-sep"></div>
-        <div class="pricing-feature">Access to 8 classes / month</div>
-        <div class="pricing-feature">Open gym (weekday mornings)</div>
-        <div class="pricing-feature">Initial movement assessment</div>
-        <div class="pricing-feature">Access to community group</div>
-        <div class="pricing-cta">
-          <button class="btn-plan btn-plan-outline">Start free week</button>
+        <!-- map placeholder -->
+        <div style="background:var(--bg1);border:1px solid var(--bdx);border-radius:var(--r);
+                    height:190px;margin-top:28px;display:flex;flex-direction:column;
+                    align-items:center;justify-content:center;gap:8px;color:var(--dim);
+                    font-size:13px;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background-image:
+            linear-gradient(rgba(107,26,26,.06) 1px,transparent 1px),
+            linear-gradient(90deg,rgba(107,26,26,.06) 1px,transparent 1px);
+            background-size:28px 28px"></div>
+          <div style="font-size:28px;position:relative;z-index:1">📍</div>
+          <div style="position:relative;z-index:1;font-weight:600">Naggar, Kullu · HP 175130</div>
+          <div style="position:relative;z-index:1;font-size:11px">Deodar forest · 1,890m</div>
         </div>
       </div>
 
-      <div class="pricing-card featured">
-        <div class="pricing-tier">Shala Member</div>
-        <div class="pricing-price">₹2,999<span>/mo</span></div>
-        <div class="pricing-period">Billed monthly · cancel anytime</div>
-        <div class="pricing-sep"></div>
-        <div class="pricing-feature">Unlimited classes</div>
-        <div class="pricing-feature">Open gym 6 AM – 9 PM daily</div>
-        <div class="pricing-feature">Monthly progress assessment</div>
-        <div class="pricing-feature">Personalised program design</div>
-        <div class="pricing-feature">Nutrition guidance sessions</div>
-        <div class="pricing-feature">Guest pass (1 per month)</div>
-        <div class="pricing-cta">
-          <button class="btn-plan btn-plan-filled">Join the shala</button>
-        </div>
-      </div>
+      <!-- Form -->
+      <div>
+        <div class="form-card">
+          <h3>Send a message</h3>
+          <p class="fs">Tell us what you're interested in. We respond within 24 hours.</p>
 
-      <div class="pricing-card">
-        <div class="pricing-tier">Elite</div>
-        <div class="pricing-price">Custom</div>
-        <div class="pricing-period">For teams, athletes &amp; corporates</div>
-        <div class="pricing-sep"></div>
-        <div class="pricing-feature">Everything in Shala Member</div>
-        <div class="pricing-feature">1-on-1 coaching sessions</div>
-        <div class="pricing-feature">Dedicated coach allocation</div>
-        <div class="pricing-feature">Competition prep programs</div>
-        <div class="pricing-feature">Corporate group bookings</div>
-        <div class="pricing-feature">Priority class booking</div>
-        <div class="pricing-cta">
-          <button class="btn-plan btn-plan-outline">Talk to us</button>
+          <div class="fgr">
+            <div class="fg"><label>Name</label><input type="text" placeholder="Your name"/></div>
+            <div class="fg"><label>Email</label><input type="email" placeholder="you@email.com"/></div>
+          </div>
+
+          <div class="fg">
+            <label>I'm interested in...</label>
+            <select>
+              <option value="">Select a practice...</option>
+              <optgroup label="Courses">
+                <option>RECODE — ₹12,000</option>
+                <option>Steel Mace Flow — ₹18,000</option>
+                <option>Kettlebell — ₹15,000</option>
+                <option>Movement Mechanics — ₹22,000</option>
+                <option>Landmines — ₹10,000</option>
+                <option>Rope Flow — ₹10,000</option>
+                <option>Bosu — ₹10,000</option>
+              </optgroup>
+              <optgroup label="Workshops">
+                <option>Rotation / Coiling — Monthly</option>
+                <option>Steel Mace Certification L1</option>
+                <option>Kettlebell Ballistics Intensive</option>
+              </optgroup>
+              <optgroup label="Camps">
+                <option>Awakening the Body (Spring · ₹35,000)</option>
+                <option>Monsoon Intensive (Summer · ₹55,000)</option>
+                <option>Harvest Flow Camp (Autumn · ₹38,000)</option>
+                <option>Silent Practice Retreat (Winter · ₹40,000)</option>
+              </optgroup>
+              <option>Just saying hello</option>
+            </select>
+          </div>
+
+          <div class="fg">
+            <label>Your message</label>
+            <textarea placeholder="Tell us about your practice, your questions, or what brought you here..."></textarea>
+          </div>
+
+          <button class="btn-p" style="width:100%;padding:13px;font-size:14px">Send Message →</button>
+          <p style="font-size:11px;color:var(--dim);margin-top:10px;text-align:center">
+            We reply within 24 hours · hello@kasratshala.com
+          </p>
         </div>
       </div>
 
     </div>
   </div>
-</section>
+</div><!-- /connect -->
 
-<div class="divider"></div>
-
-<!-- ═══════════════════════ FOOTER ════════════════════════════════════════ -->
+<!-- ─── FOOTER ───────────────────────────────────── -->
 <footer>
-  <div class="container">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="footer-logo">
-          <span class="the">THE</span>
-          <span class="brand">Kasrat</span> Shala
-        </div>
-        <p>Strength, movement, and community rooted in the ancient tradition of Indian fitness.</p>
+  <div class="wrap">
+    <div class="ft">
+      <div class="fb">
+        <div class="fb-logo"><span class="sub">MOVEMENT ARTS DOJO</span><span class="k">Kasrat</span>shala</div>
+        <p>Rooted in the Himalayas. Reaching for the sky. The body is the first temple, movement is its prayer.</p>
       </div>
-      <div class="footer-col">
-        <h5>Programs</h5>
-        <a href="#">Calisthenics</a>
-        <a href="#">Malkhamb</a>
-        <a href="#">Yoga &amp; Mobility</a>
-        <a href="#">Boot Camp</a>
-        <a href="#">Strength &amp; Conditioning</a>
+      <div class="fc">
+        <h5>Practice</h5>
+        <a onclick="sp('courses')">Courses</a>
+        <a onclick="sp('workshops')">Workshops</a>
+        <a onclick="sp('camps')">Camps</a>
+        <a onclick="sp('courses')">Online</a>
       </div>
-      <div class="footer-col">
-        <h5>Membership</h5>
-        <a href="#">Starter Plan</a>
-        <a href="#">Shala Member</a>
-        <a href="#">Elite / Corporate</a>
-        <a href="#">Gift a membership</a>
-        <a href="#">Student discount</a>
-      </div>
-      <div class="footer-col">
-        <h5>About</h5>
-        <a href="#">Our story</a>
-        <a href="#">Meet the trainers</a>
-        <a href="#">The campus</a>
-        <a href="#">Events</a>
-        <a href="#">Blog</a>
-      </div>
-      <div class="footer-col">
+      <div class="fc">
         <h5>Contact</h5>
-        <a href="#">WhatsApp us</a>
-        <a href="#">Book a visit</a>
-        <a href="#">Instagram</a>
-        <a href="#">YouTube</a>
-        <a href="#">Location</a>
+        <a onclick="sp('connect')">Write to us</a>
+        <a onclick="sp('connect')">Philosophy</a>
+        <a>Instagram</a>
+        <a>YouTube</a>
+      </div>
+      <div class="fc">
+        <h5>Support</h5>
+        <a>FAQ</a>
+        <a>Cancellation Policy</a>
+        <a>Terms</a>
+        <a>Privacy</a>
+      </div>
+      <div class="fc">
+        <h5>Location</h5>
+        <a>Naggar, Kullu</a>
+        <a>Himachal Pradesh</a>
+        <a>175130 India</a>
+        <a>1,890m elevation</a>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2025 The Kasrat Shala. All rights reserved.</span>
-      <div class="footer-legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms</a>
-        <a href="#">Refund Policy</a>
+    <div class="fb-bot">
+      <span>© 2025 Kasratshala · Naggar, Himachal Pradesh, India</span>
+      <div class="fl">
+        <a>Terms</a>
+        <a>Privacy</a>
+        <a>Cancellation</a>
       </div>
     </div>
   </div>
 </footer>
 
+<script>
+function sp(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nl a').forEach(a=>a.classList.remove('on'));
+  const pg=document.getElementById('p-'+name);
+  if(pg)pg.classList.add('on');
+  const nl=document.getElementById('n-'+name);
+  if(nl)nl.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function fc(btn,cat){
+  document.querySelectorAll('.flt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('#cg .c-card').forEach(c=>{
+    c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none';
+  });
+}
+// fix workshop featured layout on small screens
+function fixWs(){
+  const w=document.querySelector('.ws.feat .ws-feat-inner');
+  if(!w)return;
+  if(window.innerWidth<700)w.style.gridTemplateColumns='1fr';
+  else w.style.gridTemplateColumns='1fr 280px';
+}
+window.addEventListener('resize',fixWs);
+fixWs();
+</script>
 </body>
 </html>
