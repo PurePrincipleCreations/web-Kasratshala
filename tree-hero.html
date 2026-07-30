@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kasratshala — Tree Hero</title>
+
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  STACK: React 18 + Framer Motion 11 + Canvas API            ║
+  ║  To use in your project:                                     ║
+  ║  npm install framer-motion                                   ║
+  ║  Then extract the <script type="module"> as TreeHero.jsx     ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+
+<script type="importmap">
+{
+  "imports": {
+    "react":             "https://esm.sh/react@18.3.1",
+    "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
+    "react-dom/client":  "https://esm.sh/react-dom@18.3.1/client",
+    "framer-motion":     "https://esm.sh/framer-motion@11.3.8"
+  }
+}
+</script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --maroon: #6B1A1A;
+  --brick:  #A83030;
+  --gold:   #D4A853;
+  --tan:    #C4835A;
+  --g2:     #3D8C3D;
+  --txt:    #F0E6DC;
+  --muted:  #9A8878;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: #020810;
+  font-family: Georgia, serif;
+  color: var(--txt);
+}
+
+#root { width: 100%; height: 100%; }
+
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* LEFT text column */
+.text-col {
+  position: relative;
+  z-index: 20;
+  padding: 0 6vw;
+  max-width: 46%;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: clamp(.75rem, 1vw, .9rem);
+  color: var(--gold);
+  letter-spacing: .18em;
+  margin-bottom: 2.2rem;
+}
+
+.title-clip {
+  display: block;
+  overflow: hidden;
+  line-height: .9;
+  margin-bottom: .06em;
+}
+
+.title-word {
+  display: block;
+  font-size: clamp(3.6rem, 9vw, 8.5rem);
+  font-weight: 700;
+  letter-spacing: -.025em;
+}
+
+.title-word.accent { color: var(--brick); }
+
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, var(--brick), var(--gold) 60%, transparent);
+  margin: 1.8rem 0 1.6rem;
+}
+
+.sub {
+  font-size: clamp(.78rem, 1.2vw, .95rem);
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 2.2rem;
+}
+
+.pills {
+  display: flex; gap: .65rem; flex-wrap: wrap;
+  margin-bottom: 2.6rem;
+}
+
+.pill {
+  padding: .3rem .85rem;
+  border-radius: 100px;
+  font-size: .67rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border: 1px solid;
+  font-family: system-ui, sans-serif;
+}
+
+.pill-a { border-color: rgba(212,168,83,.35); color: var(--gold); }
+.pill-b { border-color: rgba(61,140,61,.35);  color: var(--g2); }
+
+.btns { display: flex; gap: .9rem; }
+
+.btn {
+  padding: .76rem 1.9rem;
+  border-radius: 3px;
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  font-family: system-ui, sans-serif;
+  transition: transform .2s, box-shadow .2s;
+}
+.btn:hover { transform: translateY(-3px); }
+
+.btn-p {
+  background: var(--brick);
+  color: var(--txt);
+  box-shadow: 0 4px 24px rgba(107,26,26,.5);
+}
+.btn-p:hover { box-shadow: 0 10px 36px rgba(168,48,48,.6); }
+
+.btn-g {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid rgba(240,230,220,.14);
+}
+.btn-g:hover { border-color: rgba(212,168,83,.5); color: var(--gold); }
+
+/* RIGHT tree panel — this is the 3D perspective container */
+.tree-panel {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 58%;
+  perspective: 1100px;
+  perspective-origin: 50% 50%;
+}
+
+.tree-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Scroll hint */
+.scroll {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: .45rem;
+}
+.scroll span {
+  font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted); font-family: system-ui, sans-serif;
+}
+.scroll-bar {
+  width: 1px; height: 42px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+  animation: sb 2.5s ease-in-out infinite;
+}
+@keyframes sb {
+  0%,100% { opacity:.2; transform: scaleY(.6); }
+  50%      { opacity:1;  transform: scaleY(1); }
+}
+
+@media (max-width: 860px) {
+  .text-col { max-width: 100%; }
+  .tree-panel { display: none; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="module">
+/* ─────────────────────────────────────────────────────────────
+   IMPORTS
+───────────────────────────────────────────────────────────── */
+import React, { useEffect, useRef } from 'react'
+import { createRoot } from 'react-dom/client'
+import { motion, animate as fma, useMotionValue } from 'framer-motion'
+
+/* ─────────────────────────────────────────────────────────────
+   SEEDED RNG  (LCG — same tree shape every render)
+───────────────────────────────────────────────────────────── */
+function makeRng(seed = 42) {
+  let s = seed
+  return () => {
+    s = (s * 1664525 + 1013904223) & 0xffffffff
+    return (s >>> 0) / 0xffffffff
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   PRE-COMPUTE TREE GEOMETRY  (called once, reused every frame)
+───────────────────────────────────────────────────────────── */
+function buildTree(W, H) {
+  const rng = makeRng(7)
+  const cx = W * 0.5
+  const groundY = H * 0.70
+
+  /* ROOT SYSTEM ─────────────────────────────────────────── */
+  const roots = []
+  const rootCount = 18
+  for (let i = 0; i < rootCount; i++) {
+    const t = i / (rootCount - 1)
+    // angles: -150° (far left) → +150° (far right), all below horizontal so they spread flat
+    const angle = (t - 0.5) * Math.PI * 1.65          // radians, roughly ±148°
+    const len   = W * (0.28 + rng() * 0.22)            // how far root reaches
+
+    // quadratic bezier control point: rises slightly then flattens
+    const cpOff = (rng() - 0.5) * W * 0.08
+    const cpX   = cx + Math.cos(angle) * len * 0.45 + cpOff
+    const cpY   = groundY - H * 0.04 - rng() * H * 0.05
+
+    const endX  = cx + Math.cos(angle) * len
+    const endY  = groundY - H * 0.01 + (rng() - 0.5) * H * 0.025
+
+    // 1-2 sub-roots branching off each main root
+    const subs = []
+    const subCount = rng() > 0.5 ? 2 : 1
+    for (let j = 0; j < subCount; j++) {
+      const st  = 0.42 + rng() * 0.30           // split parameter along main root
+      // point on bezier at st
+      const bx  = lerp(lerp(cx, cpX, st), lerp(cpX, endX, st), st)
+      const by  = lerp(lerp(groundY, cpY, st), lerp(cpY, endY, st), st)
+      const sa  = angle + (rng() - 0.5) * 0.9
+      const sl  = len * (0.22 + rng() * 0.18)
+      subs.push({
+        ox: bx, oy: by,
+        ex: bx + Math.cos(sa) * sl,
+        ey: by + Math.sin(Math.abs(sa) * 0.2) * sl * 0.15,
+        t: st
+      })
+    }
+
+    roots.push({ cx, groundY, cpX, cpY, endX, endY, subs, angle, len })
+  }
+
+  /* TRUNK ────────────────────────────────────────────────── */
+  const trunkH  = H * 0.45
+  const trunk = {
+    x0: cx, y0: groundY,
+    x1: cx + W * 0.01, y1: groundY - trunkH,
+    wBase: W * 0.065,
+    wTop:  W * 0.025,
+  }
+
+  /* BRANCHES ─────────────────────────────────────────────── */
+  function makeBranch(ox, oy, angle, len, depth) {
+    if (depth === 0 || len < W * 0.018) return []
+    const ex = ox + Math.cos(angle) * len
+    const ey = oy + Math.sin(angle) * len
+    const b  = { ox, oy, ex, ey, depth, w: Math.max(1, depth * 2.2) }
+    const spread = 0.42 + rng() * 0.18
+    return [
+      b,
+      ...makeBranch(ex, ey, angle - spread, len * (0.62 + rng() * 0.08), depth - 1),
+      ...makeBranch(ex, ey, angle + spread, len * (0.62 + rng() * 0.08), depth - 1),
+    ]
+  }
+
+  const branchOriginY = trunk.y1 + H * 0.04
+  const branches = [
+    // centre-up
+    ...makeBranch(cx, branchOriginY, -Math.PI/2,           W * 0.14, 5),
+    // left main
+    ...makeBranch(cx, branchOriginY + H*0.05, -Math.PI*0.72, W * 0.16, 5),
+    // right main
+    ...makeBranch(cx, branchOriginY + H*0.05, -Math.PI*0.28, W * 0.16, 5),
+    // lower-left
+    ...makeBranch(cx - W*0.01, branchOriginY + H*0.12, -Math.PI*0.82, W * 0.12, 4),
+    // lower-right
+    ...makeBranch(cx + W*0.01, branchOriginY + H*0.12, -Math.PI*0.18, W * 0.12, 4),
+  ]
+
+  /* LEAF POSITIONS ────────────────────────────────────────── */
+  // Gather all branch tips from depth 1 to create leaf cluster centres
+  const leaves = []
+  branches.forEach(b => {
+    if (b.depth <= 2) {
+      const count = b.depth === 1 ? 3 : 1
+      for (let i = 0; i < count; i++) {
+        leaves.push({
+          x: b.ex + (rng() - 0.5) * W * 0.04,
+          y: b.ey + (rng() - 0.5) * H * 0.03,
+          r: W * (0.025 + rng() * 0.04),
+          layer: Math.floor(rng() * 3),
+        })
+      }
+    }
+  })
+  // Extra canopy mass at top
+  const canopyY = branchOriginY - H * 0.12
+  for (let i = 0; i < 28; i++) {
+    const a  = rng() * Math.PI * 2
+    const r  = rng() * W * 0.22
+    leaves.push({
+      x: cx + Math.cos(a) * r,
+      y: canopyY + Math.sin(a) * r * 0.55,
+      r: W * (0.03 + rng() * 0.055),
+      layer: Math.floor(rng() * 3),
+    })
+  }
+
+  /* PARTICLES ────────────────────────────────────────────── */
+  const particles = Array.from({ length: 60 }, () => ({
+    x: cx + (rng() - 0.5) * W * 0.9,
+    y: groundY - rng() * H * 0.82,
+    r: 1 + rng() * 2.5,
+    speed: 0.15 + rng() * 0.4,
+    phase: rng() * Math.PI * 2,
+  }))
+
+  return { roots, trunk, branches, leaves, particles, cx, groundY, W, H }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DRAW HELPERS
+───────────────────────────────────────────────────────────── */
+function lerp(a, b, t) { return a + (b - a) * t }
+
+// Multi-pass bloom: draw the same path N times with decreasing blur + increasing opacity
+function bloom(ctx, color, draws) {
+  // draws: array of { blur, alpha, width }
+  draws.forEach(({ blur, alpha, width }) => {
+    ctx.save()
+    ctx.shadowColor = color
+    ctx.shadowBlur  = blur
+    ctx.strokeStyle = `rgba(${hexRgb(color)},${alpha})`
+    ctx.lineWidth   = width
+    ctx.stroke()
+    ctx.restore()
+  })
+}
+
+const HEX_CACHE = {}
+function hexRgb(hex) {
+  if (HEX_CACHE[hex]) return HEX_CACHE[hex]
+  const r = parseInt(hex.slice(1,3),16)
+  const g = parseInt(hex.slice(3,5),16)
+  const b = parseInt(hex.slice(5,7),16)
+  HEX_CACHE[hex] = `${r},${g},${b}`
+  return HEX_CACHE[hex]
+}
+
+// Draw a bezier with progress clipping (segments approach)
+function drawBezierProg(ctx, x0, y0, cpX, cpY, x1, y1, progress, segs = 50) {
+  if (progress <= 0) return
+  const n = Math.max(1, Math.round(segs * progress))
+  ctx.beginPath()
+  ctx.moveTo(x0, y0)
+  for (let i = 1; i <= n; i++) {
+    const t  = i / segs
+    const mt = 1 - t
+    const px = mt*mt*x0 + 2*mt*t*cpX + t*t*x1
+    const py = mt*mt*y0 + 2*mt*t*cpY + t*t*y1
+    ctx.lineTo(px, py)
+  }
+  ctx.stroke()
+}
+
+/* ─────────────────────────────────────────────────────────────
+   MAIN DRAW  — called every rAF with progress 0→1
+───────────────────────────────────────────────────────────── */
+function drawTree(ctx, geo, progress, time) {
+  const { roots, trunk, branches, leaves, particles, cx, groundY, W, H } = geo
+
+  /* Clear + dark background ─────────────────────────── */
+  ctx.clearRect(0, 0, W, H)
+
+  const bg = ctx.createRadialGradient(cx, H * 0.45, 0, cx, H * 0.45, W * 0.75)
+  bg.addColorStop(0,   '#041828')
+  bg.addColorStop(0.5, '#020D18')
+  bg.addColorStop(1,   '#010608')
+  ctx.fillStyle = bg
+  ctx.fillRect(0, 0, W, H)
+
+  /* Ground glow plane ───────────────────────────────── */
+  const gg = ctx.createRadialGradient(cx, groundY, 0, cx, groundY, W * 0.55)
+  gg.addColorStop(0,   'rgba(0,180,255,0.12)')
+  gg.addColorStop(0.4, 'rgba(0,100,200,0.06)')
+  gg.addColorStop(1,   'transparent')
+  ctx.fillStyle = gg
+  ctx.fillRect(0, groundY - 40, W, H - groundY + 40)
+
+  /* ── PHASE EASING ──────────────────────────────────── */
+  // Each feature has its own phase window within [0,1]
+  const rootP    = easeIO(clamp01((progress - 0.00) / 0.45))
+  const trunkP   = easeIO(clamp01((progress - 0.20) / 0.48))
+  const branchP  = easeO( clamp01((progress - 0.52) / 0.38))
+  const canopyP  = easeO( clamp01((progress - 0.76) / 0.24))
+  const particleP = clamp01((progress - 0.60) / 0.40)
+
+  /* ── ROOTS ─────────────────────────────────────────── */
+  roots.forEach((root, i) => {
+    // Stagger each root: root i starts a bit after i-1
+    const stagger = i / roots.length * 0.35
+    const rp = clamp01((rootP - stagger) / (1 - stagger))
+    if (rp <= 0) return
+
+    const CYAN = '#00CCFF'
+
+    // MAIN ROOT — three bloom passes
+    ctx.beginPath()
+    drawBezierProg(ctx, root.cx, root.groundY, root.cpX, root.cpY, root.endX, root.endY, rp, 60)
+    ctx.save(); ctx.shadowColor = CYAN; ctx.shadowBlur = 55; ctx.strokeStyle = 'rgba(0,180,255,0.18)'; ctx.lineWidth = 9; ctx.stroke(); ctx.restore()
+    ctx.save(); ctx.shadowColor = CYAN; ctx.shadowBlur = 22; ctx.strokeStyle = 'rgba(0,210,255,0.40)'; ctx.lineWidth = 4; ctx.stroke(); ctx.restore()
+    ctx.save(); ctx.shadowColor = '#aaeeff'; ctx.shadowBlur = 6;  ctx.strokeStyle = 'rgba(180,240,255,0.90)'; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore()
+
+    // SUB-ROOTS
+    root.subs.forEach(sub => {
+      const subProgress = clamp01((rp - sub.t) / (1 - sub.t))
+      if (subProgress <= 0) return
+      const ex = lerp(sub.ox, sub.ex, subProgress)
+      const ey = lerp(sub.oy, sub.ey, subProgress)
+
+      ctx.beginPath(); ctx.moveTo(sub.ox, sub.oy); ctx.lineTo(ex, ey)
+      ctx.save(); ctx.shadowColor = CYAN; ctx.shadowBlur = 30; ctx.strokeStyle = 'rgba(0,200,255,0.25)'; ctx.lineWidth = 5; ctx.stroke(); ctx.restore()
+      ctx.save(); ctx.shadowColor = CYAN; ctx.shadowBlur = 8;  ctx.strokeStyle = 'rgba(150,230,255,0.85)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore()
+    })
+  })
+
+  /* ── TRUNK ─────────────────────────────────────────── */
+  if (trunkP > 0) {
+    const t1x = lerp(trunk.x0, trunk.x1, trunkP)
+    const t1y = lerp(trunk.y0, trunk.y1, trunkP)
+    const wB  = trunk.wBase
+    const wT  = lerp(wB, trunk.wTop, trunkP)
+
+    // Outer bark fill — tapered trapezoid
+    ctx.beginPath()
+    ctx.moveTo(trunk.x0 - wB/2, trunk.y0)
+    ctx.quadraticCurveTo(t1x - wT * 0.9, t1y + (t1y - trunk.y0) * 0.05, t1x - wT/2, t1y)
+    ctx.lineTo(t1x + wT/2, t1y)
+    ctx.quadraticCurveTo(t1x + wT * 0.9, t1y + (t1y - trunk.y0) * 0.05, trunk.x0 + wB/2, trunk.y0)
+    ctx.closePath()
+    ctx.fillStyle = '#0a0804'
+    ctx.fill()
+
+    // Bark edge highlights
+    const barkL = ctx.createLinearGradient(trunk.x0 - wB/2, 0, trunk.x0, 0)
+    barkL.addColorStop(0, 'rgba(40,25,12,0.0)')
+    barkL.addColorStop(1, 'rgba(60,35,15,0.8)')
+    ctx.fillStyle = barkL
+    ctx.fill()
+
+    // Left edge glow (ambient green from canopy above)
+    ctx.save()
+    ctx.shadowColor = '#1a4a1a'
+    ctx.shadowBlur  = 18
+    ctx.strokeStyle = '#1a1008'
+    ctx.lineWidth   = wB * 0.08
+    ctx.beginPath()
+    ctx.moveTo(trunk.x0 - wB/2 + 2, trunk.y0)
+    ctx.lineTo(t1x - wT/2 + 1, t1y)
+    ctx.stroke()
+    ctx.restore()
+  }
+
+  /* ── BRANCHES ─────────────────────────────────────── */
+  if (branchP > 0) {
+    // Sort by depth desc so thick branches draw first
+    const sorted = [...branches].sort((a, b) => b.depth - a.depth)
+    sorted.forEach((b, i) => {
+      const stag = i / sorted.length * 0.40
+      const bp   = clamp01((branchP - stag) / (1 - stag))
+      if (bp <= 0) return
+
+      const ex = lerp(b.ox, b.ex, bp)
+      const ey = lerp(b.oy, b.ey, bp)
+
+      ctx.save()
+      ctx.lineCap = 'round'
+      ctx.strokeStyle = '#100a04'
+      ctx.lineWidth = b.w + 1
+      ctx.shadowColor = '#1a1008'
+      ctx.shadowBlur = 4
+      ctx.beginPath()
+      ctx.moveTo(b.ox, b.oy)
+      ctx.lineTo(ex, ey)
+      ctx.stroke()
+
+      // Edge highlight
+      ctx.strokeStyle = 'rgba(35,20,8,0.6)'
+      ctx.lineWidth = 1
+      ctx.shadowBlur = 0
+      ctx.stroke()
+      ctx.restore()
+    })
+  }
+
+  /* ── CANOPY / LEAVES ──────────────────────────────── */
+  if (canopyP > 0) {
+    // Layer colours (dark → bright)
+    const lColors = [
+      { fill: 'rgba(8,28,8,0.85)',   glow: null },
+      { fill: 'rgba(18,68,18,0.80)', glow: null },
+      { fill: 'rgba(28,96,28,0.75)', glow: '#1a6a1a' },
+    ]
+
+    // Draw layer 0 (shadow) first, then 1, then 2 (bright tips)
+    ;[0, 1, 2].forEach(layer => {
+      const col = lColors[layer]
+      leaves.filter(l => l.layer === layer).forEach((leaf, li) => {
+        const stag = li / leaves.length * 0.5
+        const lp   = clamp01((canopyP - stag) / (1 - stag))
+        if (lp <= 0) return
+        const r = leaf.r * lp
+
+        ctx.save()
+        if (col.glow) { ctx.shadowColor = col.glow; ctx.shadowBlur = 22 }
+        ctx.beginPath()
+        ctx.ellipse(leaf.x, leaf.y, r, r * 0.78, 0, 0, Math.PI * 2)
+        ctx.fillStyle = col.fill
+        ctx.fill()
+        ctx.restore()
+      })
+    })
+
+    // Top canopy edge green glow
+    const cg = ctx.createRadialGradient(cx, trunk.y1 - H * 0.08, 0, cx, trunk.y1 - H * 0.08, W * 0.28)
+    cg.addColorStop(0, 'rgba(20,80,20,0.0)')
+    cg.addColorStop(0.6,'rgba(15,70,15,0.12)')
+    cg.addColorStop(1, 'transparent')
+    ctx.save()
+    ctx.globalAlpha = canopyP * 0.8
+    ctx.fillStyle = cg
+    ctx.fillRect(0, 0, W, H)
+    ctx.restore()
+  }
+
+  /* ── FLOATING PARTICLES ───────────────────────────── */
+  if (particleP > 0) {
+    particles.forEach(p => {
+      const y = p.y - ((time * p.speed * 18) % (groundY * 0.85))
+      if (y < 10 || y > groundY) return
+      const alpha = particleP * (0.3 + 0.4 * Math.sin(time * 1.2 + p.phase))
+      ctx.save()
+      ctx.shadowColor = '#00CCFF'
+      ctx.shadowBlur  = 10
+      ctx.fillStyle   = `rgba(80,220,255,${alpha})`
+      ctx.beginPath()
+      ctx.arc(p.x, y, p.r, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.restore()
+    })
+  }
+
+  /* ── VIGNETTE ─────────────────────────────────────── */
+  const vg = ctx.createRadialGradient(cx, H/2, H * 0.25, cx, H/2, H * 0.85)
+  vg.addColorStop(0, 'transparent')
+  vg.addColorStop(1, 'rgba(1,4,8,0.75)')
+  ctx.fillStyle = vg
+  ctx.fillRect(0, 0, W, H)
+}
+
+/* ─────────────────────────────────────────────────────────────
+   EASING HELPERS
+───────────────────────────────────────────────────────────── */
+function clamp01(v)  { return Math.min(1, Math.max(0, v)) }
+function easeO(t)    { return 1 - Math.pow(1 - t, 3) }        // ease-out cubic
+function easeIO(t)   { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2 } // ease-in-out cubic
+
+/* ─────────────────────────────────────────────────────────────
+   REACT COMPONENT — TreeCanvas
+   Manages canvas sizing, geometry build, animation loop
+───────────────────────────────────────────────────────────── */
+function TreeCanvas({ progress }) {
+  const canvasRef  = useRef(null)
+  const geoRef     = useRef(null)
+  const rafRef     = useRef(null)
+  const startRef   = useRef(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const resize = () => {
+      const r = window.devicePixelRatio || 1
+      canvas.width  = canvas.offsetWidth  * r
+      canvas.height = canvas.offsetHeight * r
+      const ctx = canvas.getContext('2d')
+      ctx.scale(r, r)
+      // Rebuild geometry on resize
+      geoRef.current = buildTree(canvas.offsetWidth, canvas.offsetHeight)
+    }
+    resize()
+    const ro = new ResizeObserver(resize)
+    ro.observe(canvas)
+
+    let animProgress = 0
+    const tick = (ts) => {
+      if (!startRef.current) startRef.current = ts
+      const elapsed = (ts - startRef.current) / 1000
+      // 3.8s grow duration
+      animProgress = clamp01(elapsed / 3.8)
+
+      const ctx = canvas.getContext('2d')
+      ctx.save()
+      drawTree(ctx, geoRef.current, animProgress, elapsed)
+      ctx.restore()
+
+      if (animProgress < 1 || elapsed < 4.5) {
+        rafRef.current = requestAnimationFrame(tick)
+      } else {
+        // After intro, keep particles + subtle leaf shimmer running
+        const idleTick = (ts2) => {
+          const ctx2 = canvas.getContext('2d')
+          ctx2.save()
+          drawTree(ctx2, geoRef.current, 1, ts2 / 1000)
+          ctx2.restore()
+          rafRef.current = requestAnimationFrame(idleTick)
+        }
+        rafRef.current = requestAnimationFrame(idleTick)
+      }
+    }
+    rafRef.current = requestAnimationFrame(tick)
+
+    return () => {
+      cancelAnimationFrame(rafRef.current)
+      ro.disconnect()
+    }
+  }, [])
+
+  return React.createElement('canvas', {
+    ref: canvasRef,
+    style: { width: '100%', height: '100%', display: 'block' }
+  })
+}
+
+/* ─────────────────────────────────────────────────────────────
+   REACT COMPONENT — HeroText
+   Text reveals using Framer Motion
+───────────────────────────────────────────────────────────── */
+const spring = { type: 'spring', stiffness: 60, damping: 22 }
+const ease4  = { ease: [0.16, 1, 0.3, 1], duration: 0.9 }
+
+function HeroText() {
+  return React.createElement(
+    motion.div,
+    { className: 'text-col', initial: 'hidden', animate: 'show',
+      variants: { hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.5 } } }
+    },
+
+    // Sanskrit label
+    React.createElement(motion.p, {
+      className: 'label',
+      variants: { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: ease4 } }
+    }, 'शरीरं आद्यं मन्दिरम् · चलनं प्रार्थना'),
+
+    // Title
+    React.createElement('h1', null,
+      ['KASRAT', 'SHALA'].map((word, i) =>
+        React.createElement('span', { key: word, className: 'title-clip' },
+          React.createElement(motion.span, {
+            className: `title-word${i === 1 ? ' accent' : ''}`,
+            variants: {
+              hidden: { y: '115%' },
+              show:   { y: '0%', transition: { ease: [0.16,1,0.3,1], duration: 1.0, delay: i * 0.12 } }
+            }
+          }, word)
+        )
+      )
+    ),
+
+    // Rule
+    React.createElement(motion.div, {
+      className: 'rule',
+      variants: { hidden: { scaleX: 0 }, show: { scaleX: 1, transition: { ease: 'easeInOut', duration: 0.65 } } },
+      style: { transformOrigin: 'left' }
+    }),
+
+    // Sub
+    React.createElement(motion.p, {
+      className: 'sub',
+      variants: { hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.6 } } }
+    }, 'Movement Arts Dojo · Naggar, HP · 1,890 m'),
+
+    // Pills
+    React.createElement(motion.div, {
+      className: 'pills',
+      variants: { hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.5 } } }
+    },
+      React.createElement('span', { className: 'pill pill-a' }, '◦ Himachal Pradesh'),
+      React.createElement('span', { className: 'pill pill-b' }, '◦ Steel Mace · Kettlebell · Rope'),
+    ),
+
+    // Buttons
+    React.createElement(motion.div, {
+      className: 'btns',
+      variants: { hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } }
+    },
+      React.createElement('button', { className: 'btn btn-p' }, 'Begin Your Sadhana'),
+      React.createElement('button', { className: 'btn btn-g' }, 'View Courses'),
+    ),
+  )
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ROOT COMPONENT — TreeHero
+   Framer Motion 3D: starts rotated right → swings to front
+───────────────────────────────────────────────────────────── */
+function TreeHero() {
+  return React.createElement('div', { className: 'hero' },
+
+    // Left: text
+    React.createElement(HeroText),
+
+    // Right: 3D rotating tree panel
+    React.createElement('div', { className: 'tree-panel' },
+      React.createElement(motion.div, {
+        className: 'tree-stage',
+        // 3D swing: starts tilted right, rotates to front-facing
+        initial: { rotateY: -42, x: '12%', opacity: 0 },
+        animate: { rotateY: 0,   x: '0%',  opacity: 1 },
+        transition: {
+          rotateY: { type: 'spring', stiffness: 22, damping: 18, delay: 0.2 },
+          x:       { type: 'spring', stiffness: 25, damping: 20, delay: 0.2 },
+          opacity: { duration: 0.6, delay: 0.1 },
+        }
+      },
+        // Subtle idle float after intro
+        React.createElement(motion.div, {
+          style: { width: '100%', height: '100%' },
+          animate: { y: [0, -14, 0] },
+          transition: { duration: 5.5, ease: 'easeInOut', repeat: Infinity, delay: 4.2 }
+        },
+          React.createElement(TreeCanvas)
+        )
+      )
+    ),
+
+    // Scroll hint
+    React.createElement(motion.div, {
+      className: 'scroll',
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      transition: { delay: 4.2, duration: 0.8 }
+    },
+      React.createElement('span', null, 'Scroll'),
+      React.createElement('div', { className: 'scroll-bar' })
+    ),
+  )
+}
+
+/* ─────────────────────────────────────────────────────────────
+   MOUNT
+───────────────────────────────────────────────────────────── */
+createRoot(document.getElementById('root')).render(
+  React.createElement(TreeHero)
+)
+</script>
+</body>
+</html>
